@@ -8,13 +8,15 @@
 import SwiftUI
 
 struct ToolBarView: View {
+    let browserManager: BrowserManager
+    
     var body: some View {
         Button("Back") {
-            print(true)
+            browserManager.goBack()
         }
         
         Button("Forward") {
-            print(true)
+            browserManager.goForward()
         }
     }
 }

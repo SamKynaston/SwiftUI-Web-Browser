@@ -10,15 +10,16 @@ import WebKit
 
 struct WebView: NSViewRepresentable {
     let url: URL
-    
+    let onNavigation: (URL, String?) -> Void
+
     func makeNSView(context: Context) -> WKWebView {
         let webView = WKWebView()
-        let request = URLRequest(url: url)
-        webView.load(request)
+        webView.load(URLRequest(url: url))
         return webView
     }
     
-    func updateNSView(_ uiView: WKWebView, context: Context) {
-        
+    func updateNSView(_ webView: WKWebView, context: Context) {
+        guard webView.url != url else { return }
+        webView.load(URLRequest(url: url))
     }
 }
