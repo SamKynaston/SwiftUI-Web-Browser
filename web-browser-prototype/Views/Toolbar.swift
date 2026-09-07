@@ -9,10 +9,10 @@ import SwiftUI
 import WebKit
 
 struct ToolBarView: ToolbarContent {
-    @Bindable var browserManager: BrowserManager
+    @Bindable var browserManager: BrowserTabManager
     @State private var addressBarText = ""
 
-    init(browserManager: BrowserManager) {
+    init(browserManager: BrowserTabManager) {
         self.browserManager = browserManager
 
         let url = browserManager.activeTab?.browserWebManager.url

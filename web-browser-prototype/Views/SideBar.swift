@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct SideBarView: View {
-    @Bindable var browserManager: BrowserManager
+    @Bindable var browserManager: BrowserTabManager
 
     var body: some View {
         List(selection: $browserManager.activeTabId) {

@@ -1,5 +1,5 @@
 //
-//  Tabs.swift
+//  BrowserTabManager.swift
 //  web-browser-prototype
 //
 //  Created by Sam on 07/09/2026.
@@ -10,7 +10,7 @@ import SwiftUI
 import WebKit
 
 @Observable
-class BrowserManager {
+class BrowserTabManager {
     var tabs: [BrowserTab] =  [
         BrowserTab(title: "Google", url: URL(string: "https://www.google.com")!),
         BrowserTab(title: "Amazon", url: URL(string: "https://www.amazon.com")!)
@@ -43,6 +43,25 @@ class BrowserManager {
     
     func getTab(UUID: UUID) -> BrowserTab? {
         tabs.first { $0.id == UUID }
+    }
+    
+    func switchToNextTab() {
+        guard let activeTabId,
+              let index = tabs.firstIndex(where: { $0.id == activeTabId }),
+              !tabs.isEmpty
+        else { return }
+        
+        let nextIndex = (index + 1) % tabs.count
+        self.activeTabId = tabs[nextIndex].id
+    }
+    
+    func switchToPreviousTab() {
+        guard let activeTabId,
+              let index = tabs.firstIndex(where: { $0.id == activeTabId })
+        else { return }
+        
+        let prevIndex = (index - 1 + tabs.count) % tabs.count
+        self.activeTabId = tabs[prevIndex].id
     }
     
     func goBack() {

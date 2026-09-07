@@ -1,30 +1,14 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State var browserManager = BrowserManager()
-
+    @State var browserManager = BrowserTabManager()
+    
     var body: some View {
-        NavigationSplitView {
-            SideBarView(browserManager: browserManager)
-            //.toolbar(removing: .sidebarToggle)
-        } detail: {
-            if let selectedId = browserManager.activeTabId {
-                if let activeTab = browserManager.getTab(UUID: selectedId) {
-                    WebView(
-                        url: activeTab.url,
-                        manager: activeTab.browserWebManager
-                    )
-                    .id(activeTab.id)
-
-                    .toolbar {
-                        ToolBarView(
-                            browserManager: browserManager
-                        )
-                    }
-                }
-            }
-        }
-        .navigationSplitViewStyle(.balanced)
+        #if os(macOS)
+            MainDesktopView(browserManager: browserManager)
+        #elseif os(iOS)
+            MainMobileView(browserManager: browserManager)
+        #endif
     }
 }
 
