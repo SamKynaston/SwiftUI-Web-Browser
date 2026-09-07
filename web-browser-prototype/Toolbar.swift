@@ -9,7 +9,11 @@ import SwiftUI
 
 struct ToolBarView: View {
     var body: some View {
-        Button("Test") {
+        Button("Back") {
+            print(true)
+        }
+        
+        Button("Forward") {
             print(true)
         }
     }
