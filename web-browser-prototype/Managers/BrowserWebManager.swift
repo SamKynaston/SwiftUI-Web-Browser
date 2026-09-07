@@ -18,6 +18,10 @@ final class BrowserWebManager {
     var canGoForward = false
     var isLoading = false
 
+    init(initialURL: URL? = nil) {
+        self.url = initialURL
+    }
+    
     func navigate(to url: URL) {
         webView?.load(URLRequest(url: url))
     }

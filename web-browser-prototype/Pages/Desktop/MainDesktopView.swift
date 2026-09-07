@@ -17,7 +17,7 @@ struct MainDesktopView: View {
         } detail: {
             if let selectedId = browserManager.activeTabId {
                 if let activeTab = browserManager.getTab(UUID: selectedId) {
-                    WebView(
+                    /*CustomWebView(
                         url: activeTab.url,
                         manager: activeTab.browserWebManager
                     )
@@ -27,7 +27,7 @@ struct MainDesktopView: View {
                         ToolBarView(
                             browserManager: browserManager
                         )
-                    }
+                    }*/
                 }
             }
         }

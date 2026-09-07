@@ -16,10 +16,30 @@ class BrowserTabManager {
         BrowserTab(title: "Amazon", url: URL(string: "https://www.amazon.com")!)
     ]
     
+    var tabSwitchDirection: Int = 0
     var activeTabId: UUID?
     
     init() {
         activeTabId = tabs.first?.id
+    }
+    
+    var adjacentTabId: UUID? {
+        guard let activeTabId,
+              let index = tabs.firstIndex(where: {
+                  $0.id == activeTabId
+              }),
+              tabs.count > 1
+        else {
+            return nil
+        }
+
+        if tabSwitchDirection > 0 {
+            let nextIndex = (index + 1) % tabs.count
+            return tabs[nextIndex].id
+        } else {
+            let previousIndex = (index - 1 + tabs.count) % tabs.count
+            return tabs[previousIndex].id
+        }
     }
     
     var activeTab: BrowserTab? {
@@ -52,6 +72,8 @@ class BrowserTabManager {
         else { return }
         
         let nextIndex = (index + 1) % tabs.count
+        
+        tabSwitchDirection = 1
         self.activeTabId = tabs[nextIndex].id
     }
     
@@ -61,6 +83,8 @@ class BrowserTabManager {
         else { return }
         
         let prevIndex = (index - 1 + tabs.count) % tabs.count
+        
+        tabSwitchDirection = -1
         self.activeTabId = tabs[prevIndex].id
     }
     
