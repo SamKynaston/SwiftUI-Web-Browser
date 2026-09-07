@@ -22,6 +22,5 @@ struct MainDesktopView: View {
                 )
             }
         }
-        //.navigationSplitViewStyle(.balanced)
     }
 }

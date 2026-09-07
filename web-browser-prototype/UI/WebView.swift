@@ -49,6 +49,7 @@ struct WebView: ViewRepresentable {
 
         webView.navigationDelegate = context.coordinator
         webView.load(URLRequest(url: url))
+        context.coordinator.observeProgress(of: webView)
 
         manager.webView = webView
 
@@ -60,10 +61,23 @@ struct WebView: ViewRepresentable {
     }
     
     final class Coordinator: NSObject, WKNavigationDelegate {
+        private var progressObservation: NSKeyValueObservation?
+        
         let manager: BrowserWebManager
 
         init(manager: BrowserWebManager) {
             self.manager = manager
+        }
+        
+        func observeProgress(of webView: WKWebView) {
+            progressObservation = webView.observe(
+                \.estimatedProgress,
+                options: [.initial, .new]
+            ) { [weak self] webView, _ in
+                DispatchQueue.main.async {
+                    self?.manager.loadingProgress = webView.estimatedProgress
+                }
+            }
         }
         
         func webView(
@@ -71,6 +85,7 @@ struct WebView: ViewRepresentable {
             didStartProvisionalNavigation navigation: WKNavigation?
         ) {
             manager.isLoading = true
+            manager.loadingProgress = 0
             updateState(webView)
         }
         
@@ -79,6 +94,7 @@ struct WebView: ViewRepresentable {
             didFinish navigation: WKNavigation?
         ) {
             manager.isLoading = false
+            manager.loadingProgress = 1
             updateState(webView)
         }
         

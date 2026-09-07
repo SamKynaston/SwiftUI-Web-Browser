@@ -22,6 +22,12 @@ struct AddressBar: View {
         )
     }
     
+    private var loadingProgress: Double {
+        browserManager.activeTab?
+            .browserWebManager
+            .loadingProgress ?? 0
+    }
+    
     var body: some View {
         HStack {
             Image(systemName: "magnifyingglass")
@@ -32,7 +38,6 @@ struct AddressBar: View {
                 text: $text
             )
             .textFieldStyle(.plain)
-            .multilineTextAlignment(.center)
             .onChange(of: browserManager.activeTabId) {
                 text =
                     browserManager.activeTab?.browserWebManager.url?.absoluteString
@@ -59,7 +64,33 @@ struct AddressBar: View {
             .onSubmit() {
                 navigate()
             }
+            
+            Button {
+                browserManager.reload()
+            } label: {
+                Image(systemName: "arrow.trianglehead.clockwise.rotate.90")
+                    .foregroundColor(.gray)
+                    .font(.system(size: 10))
+            }
         }
+        .padding(.leading, 12)
+        .overlay(alignment: .bottom) {
+            GeometryReader { geometry in
+                Rectangle()
+                    .frame(
+                        width: geometry.size.width * loadingProgress,
+                        height: 2
+                    )
+                    .frame( maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomLeading )
+                    .allowsHitTesting(false)
+            }
+            .opacity(
+                browserManager.activeTab?.browserWebManager.isLoading == true
+                    ? 1
+                    : 0
+            )
+        }
+        .clipShape(Capsule())
     }
     
     private func navigate() {

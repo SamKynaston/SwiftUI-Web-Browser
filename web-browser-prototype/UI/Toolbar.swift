@@ -34,6 +34,7 @@ struct ToolBarView: ToolbarContent {
         
         ToolbarItem(placement: .principal) {
             AddressBar(browserManager: browserManager)
+                .frame(width: 350)
         }
     }
 }

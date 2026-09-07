@@ -17,6 +17,7 @@ final class BrowserWebManager {
     var canGoBack = false
     var canGoForward = false
     var isLoading = false
+    var loadingProgress: Double = 0.0
 
     init(initialURL: URL? = nil) {
         self.url = initialURL
@@ -26,6 +27,10 @@ final class BrowserWebManager {
         webView?.load(URLRequest(url: url))
     }
 
+    func refresh() {
+        webView?.reload()
+    }
+    
     func goBack() {
         webView?.goBack()
     }

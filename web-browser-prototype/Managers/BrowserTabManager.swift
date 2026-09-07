@@ -89,14 +89,14 @@ class BrowserTabManager {
     }
     
     func goBack() {
-        activeTab?.browserWebManager.webView?.goBack()
+        activeTab?.browserWebManager.goBack()
     }
 
     func goForward() {
-        activeTab?.browserWebManager.webView?.goForward()
+        activeTab?.browserWebManager.goForward()
     }
 
     func reload() {
-        activeTab?.browserWebManager.webView?.reload()
+        activeTab?.browserWebManager.reload()
     }
 }
