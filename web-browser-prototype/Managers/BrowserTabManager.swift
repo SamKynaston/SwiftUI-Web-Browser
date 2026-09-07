@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import WebKit
 
 @Observable
 class BrowserManager {
@@ -44,23 +45,15 @@ class BrowserManager {
         tabs.first { $0.id == UUID }
     }
     
-    func visitUrl(_ url: URL, in tabId: UUID) {
-        guard let index = tabs.firstIndex(of: getTab(UUID: tabId)!) else { return }
-        
-        tabs[index].visit(url)
-    }
-    
     func goBack() {
-        guard let activeTabId else { return }
-        guard let index = tabs.firstIndex(where: { $0.id == activeTabId }) else { return }
-
-        tabs[index].goBack()
+        activeTab?.browserWebManager.webView?.goBack()
     }
 
     func goForward() {
-        guard let activeTabId else { return }
-        guard let index = tabs.firstIndex(where: { $0.id == activeTabId }) else { return }
+        activeTab?.browserWebManager.webView?.goForward()
+    }
 
-        tabs[index].goForward()
+    func reload() {
+        activeTab?.browserWebManager.webView?.reload()
     }
 }

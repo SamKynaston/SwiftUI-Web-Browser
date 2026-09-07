@@ -8,11 +8,10 @@
 import SwiftUI
 
 struct SideBarView: View {
-    @Binding var selectedTabId: UUID?
-    let browserManager: BrowserManager
-    
+    @Bindable var browserManager: BrowserManager
+
     var body: some View {
-        List(selection: $selectedTabId) {
+        List(selection: $browserManager.activeTabId) {
             ForEach(browserManager.tabs) { tab in
                 Text(tab.title)
                     .tag(tab.id as UUID?)

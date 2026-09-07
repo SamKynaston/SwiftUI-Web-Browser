@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ToolBarView: View {
-    let browserManager: BrowserManager
+    @Bindable var browserManager: BrowserManager
     
     var body: some View {
         Button("Back") {

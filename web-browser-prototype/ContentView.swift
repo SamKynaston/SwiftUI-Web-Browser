@@ -1,31 +1,23 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State private var browserManager = BrowserManager()
-    @State private var selectedTabId: UUID?
+    @State var browserManager = BrowserManager()
 
     var body: some View {
         NavigationSplitView {
-            SideBarView(selectedTabId: $selectedTabId, browserManager: browserManager)
+            SideBarView(browserManager: browserManager)
         } detail: {
-            if let selectedId = selectedTabId {
+            if let selectedId = browserManager.activeTabId {
                 if let activeTab = browserManager.getTab(UUID: selectedId) {
-                    WebView(url: activeTab.url) {
-                        url, title in browserManager.visitUrl(
-                            url,
-                            in: selectedId
-                        )
-                    }
+                    WebView(
+                        url: activeTab.url,
+                        manager: activeTab.browserWebManager
+                    )
                     .id(activeTab.id)
                     .toolbar {
                         ToolBarView(browserManager: browserManager)
                     }
                 }
-            }
-        }
-        .onAppear {
-            if selectedTabId == nil {
-                selectedTabId = browserManager.tabs.first?.id
             }
         }
     }
