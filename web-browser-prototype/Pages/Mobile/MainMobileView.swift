@@ -13,13 +13,13 @@ struct MainMobileView: View {
     var body: some View {
         ZStack(alignment: .bottom) {
             Page(browserManager: browserManager)
+                .ignoresSafeArea()
             AddressBar(browserManager: browserManager)
                 .frame(height: 52)
                 .glassEffect(.regular.interactive(), in: .capsule)
-                .padding(.bottom, 16)
-                .padding(.horizontal, 16)
+                .padding(.bottom, 4)
+                .padding(.horizontal, 8)
             
         }
-        .ignoresSafeArea()
     }
 }

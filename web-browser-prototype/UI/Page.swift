@@ -18,9 +18,9 @@ struct Page: View {
                     width: geometry.size.width,
                     height: geometry.size.height
                 )
-                .ignoresSafeArea()
             }
         }
+        .clipped()
     }
     
     private func tabWebView(
