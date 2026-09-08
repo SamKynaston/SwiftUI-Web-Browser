@@ -27,13 +27,19 @@ final class BrowserWebManager {
         var text = text.trimmingCharacters(
             in: .whitespacesAndNewlines
         )
+
+        let websiteRegex = try! Regex(#"^(https?://)?(www\.)?[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)+(/.*)?$"#)
         
-        if !text.contains("www.") {
-            text = "https://google.com/search?q=\(text)"
-        } else if text.contains("www.") {
+        if text.contains(websiteRegex) {
             if !text.contains("://") {
                 text = "https://" + text
             }
+        } else {
+            let query = text.addingPercentEncoding(
+                withAllowedCharacters: .urlQueryAllowed
+            ) ?? text
+
+            text = "https://www.google.com/search?q=\(query)"
         }
         
         guard let url = URL(string: text) else {
