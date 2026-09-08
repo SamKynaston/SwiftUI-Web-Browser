@@ -14,7 +14,7 @@ struct SideBarView: View {
         List {
             Section {
                 ForEach(browserManager.tabGroups) { group in
-                    VStack(spacing: 12) {
+                    VStack(spacing: 0) {
                         Button {
                             browserManager.selectGroup(group)
                         } label: {
@@ -39,6 +39,7 @@ struct SideBarView: View {
                         .buttonStyle(.plain)
                         
                         if browserManager.activeGroupId == group.id {
+                            Spacer()
                             ForEach(group.tabs) { tab in
                                 Button {
                                     browserManager.selectTab(tab, in: group)
@@ -60,7 +61,16 @@ struct SideBarView: View {
                                         }
                                         .buttonStyle(.plain)
                                     }
-                                    .padding(.leading, 8)
+                                    .padding(.vertical, 6)
+                                    .padding(.horizontal, 8)
+                                    .background {
+                                        RoundedRectangle(cornerRadius: 6)
+                                            .fill(
+                                                browserManager.activeTabId == tab.id
+                                                    ? Color.accentColor.opacity(0.15)
+                                                    : .clear
+                                            )
+                                    }
                                     .contentShape(Rectangle())
                                 }
                                 .buttonStyle(.plain)
