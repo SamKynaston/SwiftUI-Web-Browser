@@ -17,19 +17,22 @@ struct ToolBarView: ToolbarContent {
     
     var body: some ToolbarContent {
         ToolbarItemGroup(placement: .navigation) {
-            Button {
-                browserManager.goBack()
-            } label: {
-                Image(systemName: "arrowshape.turn.up.backward")
+            ControlGroup {
+                Button {
+                    browserManager.goBack()
+                } label: {
+                    Image(systemName: "chevron.backward")
+                }
+                .disabled(!(activeTab?.browserWebManager.canGoBack ?? false))
+          
+                Button {
+                    browserManager.goForward()
+                } label: {
+                    Image(systemName: "chevron.forward")
+                }
+                .disabled(!(activeTab?.browserWebManager.canGoForward ?? false))
             }
-            .disabled(!(activeTab?.browserWebManager.canGoBack ?? false))
-            
-            Button {
-                browserManager.goForward()
-            } label: {
-                Image(systemName: "arrowshape.turn.up.forward")
-            }
-            .disabled(!(activeTab?.browserWebManager.canGoForward ?? false))
+            .controlGroupStyle(.navigation)
         }
         
         ToolbarItem(placement: .principal) {
