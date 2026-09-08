@@ -21,7 +21,7 @@ struct SideBarView: View {
                             HStack(spacing: 8) {
                                 Image(systemName: "square.on.square")
                                     .foregroundStyle(.tint)
-
+                                
                                 Text(group.name)
                                     .lineLimit(1)
                                 
@@ -50,7 +50,7 @@ struct SideBarView: View {
                                         
                                         Text(tab.browserWebManager.title)
                                             .lineLimit(1)
-
+                                        
                                         Spacer()
                                         
                                         Button {
@@ -67,8 +67,8 @@ struct SideBarView: View {
                                         RoundedRectangle(cornerRadius: 6)
                                             .fill(
                                                 browserManager.activeTabId == tab.id
-                                                    ? Color.accentColor.opacity(0.15)
-                                                    : .clear
+                                                ? Color.accentColor.opacity(0.15)
+                                                : .clear
                                             )
                                     }
                                     .contentShape(Rectangle())
@@ -80,10 +80,12 @@ struct SideBarView: View {
                 }
                 
             } header: {
-                Text("Tab Groups")
-                    .font(.headline)
-                    .foregroundStyle(.secondary)
-                    .padding(.bottom, 6)
+                HStack {
+                    Text("Tab Groups")
+                        .font(.headline)
+                        .foregroundStyle(.secondary)
+                        .padding(.bottom, 6)
+                }
             }
         }
         .listStyle(.sidebar)

@@ -7,14 +7,20 @@ struct MainDesktopView: View {
     var body: some View {
         NavigationSplitView {
             SideBarView(browserManager: browserManager)
+                .toolbar {
+                    ToolbarItem(placement: .automatic) {
+                        Button {
+                            browserManager.createTabGroup(name: "Default")
+                        } label: {
+                            Image(systemName: "rectangle.badge.plus")
+                        }
+                    }
+                }
         } detail: {
             TabRenderer(browserManager: browserManager)
-            
-            .toolbar {
-                ToolBarView(
-                    browserManager: browserManager
-                )
-            }
+                .toolbar {
+                    ToolBarView(browserManager: browserManager)
+                }
         }
     }
 }
