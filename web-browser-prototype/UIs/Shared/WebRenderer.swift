@@ -134,32 +134,7 @@ struct WebRenderer: ViewRepresentable {
         }
         
         private func updateBackgroundColor(_ webView: WKWebView) {
-            let javascript = """
-            (() => {
-                const body = document.body;
-                const html = document.documentElement;
-
-                const bodyColor = body
-                    ? getComputedStyle(body).backgroundColor
-                    : '';
-
-                const htmlColor = getComputedStyle(html).backgroundColor;
-
-                return bodyColor && bodyColor !== 'rgba(0, 0, 0, 0)'
-                    ? bodyColor
-                    : htmlColor;
-            })();
-            """
-
-            webView.evaluateJavaScript(javascript) { result, error in
-                guard error == nil, let color = result as? String else {
-                    return
-                }
-
-                DispatchQueue.main.async {
-                    self.manager.pageBackgroundColor = color
-                }
-            }
+            // TODO
         }
 
         private func updateState(_ webView: WKWebView) {
