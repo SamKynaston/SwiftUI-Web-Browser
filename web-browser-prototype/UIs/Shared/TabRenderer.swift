@@ -24,7 +24,7 @@ struct TabRenderer: View {
     }
     
     private func tabWebView(
-        tab: BrowserTab,
+        tab: BrowserTabModel,
         width: CGFloat,
         height: CGFloat
     ) -> some View {
@@ -43,7 +43,7 @@ struct TabRenderer: View {
     }
 
     private func tabOffset(
-        tab: BrowserTab,
+        tab: BrowserTabModel,
         width: CGFloat
     ) -> CGFloat {
         if tab.id == browserManager.activeTabId {

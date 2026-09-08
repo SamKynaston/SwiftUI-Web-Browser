@@ -11,9 +11,9 @@ import WebKit
 
 @Observable
 class BrowserTabManager {
-    var tabs: [BrowserTab] =  [
-        BrowserTab(title: "Google", url: URL(string: "https://www.google.com")!),
-        BrowserTab(title: "Amazon", url: URL(string: "https://www.amazon.com")!)
+    var tabs: [TabModel] =  [
+        TabModel(title: "Google", url: URL(string: "https://www.google.com")!),
+        TabModel(title: "Amazon", url: URL(string: "https://www.amazon.com")!)
     ]
     
     var tabSwitchDirection: Int = 0
@@ -42,7 +42,7 @@ class BrowserTabManager {
         }
     }
     
-    var activeTab: BrowserTab? {
+    var activeTab: TabModel? {
         guard let activeTabId else { return nil }
 
         return tabs.first {
@@ -52,7 +52,7 @@ class BrowserTabManager {
     
     func createTab(title: String, urlString: String) {
         guard let url = URL(string: urlString) else { return }
-        let newTab = BrowserTab(title: title, url: url)
+        let newTab = TabModel(title: title, url: url)
         tabs.append(newTab)
         activeTabId = newTab.id
     }
@@ -61,7 +61,7 @@ class BrowserTabManager {
         tabs.remove(atOffsets: offsets)
     }
     
-    func getTab(UUID: UUID) -> BrowserTab? {
+    func getTab(UUID: UUID) -> TabModel? {
         tabs.first { $0.id == UUID }
     }
     

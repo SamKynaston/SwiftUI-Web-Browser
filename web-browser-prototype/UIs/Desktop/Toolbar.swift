@@ -11,7 +11,7 @@ import WebKit
 struct ToolBarView: ToolbarContent {
     @Bindable var browserManager: BrowserTabManager
 
-    var activeTab: BrowserTab? {
+    var activeTab: TabModel? {
         browserManager.activeTab
     }
     

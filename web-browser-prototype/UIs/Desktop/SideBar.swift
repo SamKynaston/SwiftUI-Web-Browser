@@ -53,7 +53,7 @@ struct SideBarView: View {
         }
     }
     
-    private func destroyTab(_ tab: BrowserTab) {
+    private func destroyTab(_ tab: TabModel) {
         if let index = browserManager.tabs.firstIndex(where: { $0.id == tab.id }) {
             browserManager.destroyTab(at: IndexSet(integer: index))
         }
