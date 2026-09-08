@@ -47,7 +47,7 @@ struct SideBarView: View {
                                         Image(systemName: "globe")
                                             .foregroundStyle(.tint)
                                         
-                                        Text(tab.title)
+                                        Text(tab.browserWebManager.title)
                                             .lineLimit(1)
 
                                         Spacer()

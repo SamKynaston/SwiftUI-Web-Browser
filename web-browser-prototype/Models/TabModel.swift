@@ -16,6 +16,6 @@ struct TabModel: Identifiable {
     init(title: String = "New Tab", url: URL) {
         self.title = title
         self.url = url
-        self.browserWebManager = BrowserWebManager()
+        self.browserWebManager = BrowserWebManager(initialURL: url)
     }
 }

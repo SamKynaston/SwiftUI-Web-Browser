@@ -48,11 +48,20 @@ struct WebRenderer: ViewRepresentable {
         let webView = WKWebView()
 
         webView.navigationDelegate = context.coordinator
-        webView.load(URLRequest(url: url))
+        
+        if let url = manager.url {
+                webView.load(URLRequest(url: url))
+        }
+        
         context.coordinator.observeProgress(of: webView)
-
+        
         manager.webView = webView
-
+        
+        manager.onNavigationChange = { url, title in
+            manager.url = url
+            manager.title = title
+        }
+        
         return webView
     }
 
@@ -121,6 +130,8 @@ struct WebRenderer: ViewRepresentable {
             manager.title = webView.title ?? "New Tab"
             manager.canGoBack = webView.canGoBack
             manager.canGoForward = webView.canGoForward
+
+            manager.onNavigationChange?(webView.url, webView.title ?? "New Tab")
         }
     }
 }

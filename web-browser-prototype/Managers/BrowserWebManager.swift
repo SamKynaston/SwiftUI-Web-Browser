@@ -22,6 +22,8 @@ final class BrowserWebManager {
     init(initialURL: URL? = nil) {
         self.url = initialURL
     }
+    
+    var onNavigationChange: ((URL?, String) -> Void)?
 
     func navigate(to text: String) {
         var text = text.trimmingCharacters(

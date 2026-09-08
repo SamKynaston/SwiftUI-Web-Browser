@@ -38,6 +38,9 @@ struct AddressBar: View {
                 text: $text
             )
             .textFieldStyle(.plain)
+            .onChange(of: browserManager.activeTab?.browserWebManager.url) {
+                text = browserManager.activeTab?.browserWebManager.url?.absoluteString ?? ""
+            }
             .onChange(of: browserManager.activeTabId) {
                 text =
                     browserManager.activeTab?.browserWebManager.url?.absoluteString
