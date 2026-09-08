@@ -1,5 +1,6 @@
 import SwiftUI
 
+#if os(macOS)
 struct MainDesktopView: View {
     @Bindable var browserManager: BrowserTabManager
 
@@ -17,7 +18,9 @@ struct MainDesktopView: View {
         }
     }
 }
+#endif
 
+#if os(iOS)
 struct MainMobileView: View {
     @Bindable var browserManager: BrowserTabManager
 
@@ -28,11 +31,15 @@ struct MainMobileView: View {
         }
         .safeAreaInset(edge: .bottom) {
             AddressBar(browserManager: browserManager)
+                .padding(.horizontal, 16)
+                .padding(.vertical, 12)
+                .glassEffect(.regular.interactive(), in: .capsule)
                 .padding(.horizontal)
-                .padding(.bottom, 4)
+                .keyboardType(.URL)
         }
     }
 }
+#endif
 
 struct ContentView: View {
     @State var browserManager = BrowserTabManager()

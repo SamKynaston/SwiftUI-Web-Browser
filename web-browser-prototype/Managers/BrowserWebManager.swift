@@ -22,11 +22,27 @@ final class BrowserWebManager {
     init(initialURL: URL? = nil) {
         self.url = initialURL
     }
-    
-    func navigate(to url: URL) {
+
+    func navigate(to text: String) {
+        var text = text.trimmingCharacters(
+            in: .whitespacesAndNewlines
+        )
+        
+        if !text.contains("www.") {
+            text = "https://google.com/search?q=\(text)"
+        } else if text.contains("www.") {
+            if !text.contains("://") {
+                text = "https://" + text
+            }
+        }
+        
+        guard let url = URL(string: text) else {
+            return
+        }
+        
         webView?.load(URLRequest(url: url))
     }
-
+    
     func refresh() {
         webView?.reload()
     }

@@ -88,6 +88,10 @@ class BrowserTabManager {
         self.activeTabId = tabs[prevIndex].id
     }
     
+    func navigate(to url: String) {
+        activeTab?.browserWebManager.navigate(to: url)
+    }
+    
     func goBack() {
         activeTab?.browserWebManager.goBack()
     }
