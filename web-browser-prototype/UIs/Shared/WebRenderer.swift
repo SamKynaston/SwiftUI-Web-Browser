@@ -14,7 +14,7 @@ typealias ViewRepresentable = NSViewRepresentable
 typealias ViewRepresentable = UIViewRepresentable
 #endif
 
-struct WebView: ViewRepresentable {
+struct WebRenderer: ViewRepresentable {
     let url: URL
     let manager: BrowserWebManager
     

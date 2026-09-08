@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct Page: View {
+struct TabRenderer: View {
     @Bindable var browserManager: BrowserTabManager
 
     var body: some View {
@@ -28,7 +28,7 @@ struct Page: View {
         width: CGFloat,
         height: CGFloat
     ) -> some View {
-        WebView(
+        WebRenderer(
             url: tab.url,
             manager: tab.browserWebManager
         )

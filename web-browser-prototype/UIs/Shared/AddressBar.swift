@@ -44,23 +44,6 @@ struct AddressBar: View {
                     ?? browserManager.activeTab?.url.absoluteString
                     ?? ""
             }
-            .gesture(
-                DragGesture(minimumDistance: 20)
-                    .onEnded { value in
-                        let horizontalTranslation = value.translation.width
-                        let threshold: CGFloat = 50
-
-                        if horizontalTranslation < -threshold {
-                            withAnimation(.easeInOut(duration: 0.25)) {
-                                browserManager.switchToNextTab()
-                            }
-                        } else if horizontalTranslation > threshold {
-                            withAnimation(.easeInOut(duration: 0.25)) {
-                                browserManager.switchToPreviousTab()
-                            }
-                        }
-                    }
-            )
             .onSubmit() {
                 navigate()
             }
@@ -73,6 +56,7 @@ struct AddressBar: View {
                     .font(.system(size: 10))
             }
         }
+        .clipShape(Capsule())
         .padding(.leading, 12)
         .overlay(alignment: .bottom) {
             GeometryReader { geometry in
@@ -90,22 +74,25 @@ struct AddressBar: View {
                     : 0
             )
         }
-        .clipShape(Capsule())
     }
     
     private func navigate() {
         var text = text.trimmingCharacters(
             in: .whitespacesAndNewlines
         )
-
-        if !text.contains("://") {
-            text = "https://" + text
+        
+        if !text.contains("www.") {
+            text = "https://google.com/search?q=\(text)"
+        } else if text.contains("www.") {
+            if !text.contains("://") {
+                text = "https://" + text
+            }
         }
-
+        
         guard let url = URL(string: text) else {
             return
         }
-
+        
         browserManager.activeTab?.browserWebManager.navigate(to: url)
     }
 }
