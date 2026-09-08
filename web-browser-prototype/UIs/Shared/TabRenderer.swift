@@ -18,10 +18,8 @@ struct TabRenderer: View {
                     manager: tab.browserWebManager
                 )
                 .id(tab.id)
-                .frame(
-                    width: geometry.size.width,
-                    height: geometry.size.height
-                )
+            } else {
+                Color(.systemBackground)
             }
         }
         .clipped()

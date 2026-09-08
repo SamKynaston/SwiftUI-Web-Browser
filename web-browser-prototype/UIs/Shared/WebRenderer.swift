@@ -46,8 +46,15 @@ struct WebRenderer: ViewRepresentable {
     
     private func makeWebView(context: Context) -> WKWebView {
         let webView = WKWebView()
-
         webView.navigationDelegate = context.coordinator
+        
+        #if os(iOS)
+        webView.isOpaque = false
+        webView.backgroundColor = .clear
+        webView.scrollView.backgroundColor = .clear
+        #elseif os(macOS)
+        webView.setValue(false, forKey: "drawsBackground")
+        #endif
         
         if let url = manager.url {
                 webView.load(URLRequest(url: url))
@@ -105,6 +112,7 @@ struct WebRenderer: ViewRepresentable {
             manager.isLoading = false
             manager.loadingProgress = 1
             updateState(webView)
+            updateBackgroundColor(webView)
         }
         
         func webView(
@@ -123,6 +131,35 @@ struct WebRenderer: ViewRepresentable {
         ) {
             manager.isLoading = false
             updateState(webView)
+        }
+        
+        private func updateBackgroundColor(_ webView: WKWebView) {
+            let javascript = """
+            (() => {
+                const body = document.body;
+                const html = document.documentElement;
+
+                const bodyColor = body
+                    ? getComputedStyle(body).backgroundColor
+                    : '';
+
+                const htmlColor = getComputedStyle(html).backgroundColor;
+
+                return bodyColor && bodyColor !== 'rgba(0, 0, 0, 0)'
+                    ? bodyColor
+                    : htmlColor;
+            })();
+            """
+
+            webView.evaluateJavaScript(javascript) { result, error in
+                guard error == nil, let color = result as? String else {
+                    return
+                }
+
+                DispatchQueue.main.async {
+                    self.manager.pageBackgroundColor = color
+                }
+            }
         }
 
         private func updateState(_ webView: WKWebView) {

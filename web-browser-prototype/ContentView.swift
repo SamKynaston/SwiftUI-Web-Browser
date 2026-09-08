@@ -33,15 +33,15 @@ struct MainMobileView: View {
     var body: some View {
         ZStack(alignment: .bottom) {
             TabRenderer(browserManager: browserManager)
-                .ignoresSafeArea()
-        }
-        .safeAreaInset(edge: .bottom) {
+                .ignoresSafeArea(.container, edges: .bottom)
+            
             AddressBar(browserManager: browserManager)
                 .padding(.horizontal, 16)
                 .padding(.vertical, 12)
                 .glassEffect(.regular.interactive(), in: .capsule)
                 .padding(.horizontal)
-                .keyboardType(.URL)
+                .keyboardType(.webSearch)
+                .textInputAutocapitalization(.never)
         }
     }
 }

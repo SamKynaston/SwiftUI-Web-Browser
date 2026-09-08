@@ -13,7 +13,8 @@ final class BrowserWebManager {
 
     var url: URL?
     var title: String = "New Tab"
-
+    var pageBackgroundColor: String = "rgb(255, 255, 255)"
+    
     var canGoBack = false
     var canGoForward = false
     var isLoading = false
