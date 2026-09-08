@@ -68,12 +68,12 @@ struct SideBarView: View {
                         }
                     }
                 }
-                .padding(.top, 12)
                 
             } header: {
                 Text("Tab Groups")
                     .font(.headline)
                     .foregroundStyle(.secondary)
+                    .padding(.bottom, 6)
             }
         }
         .listStyle(.sidebar)

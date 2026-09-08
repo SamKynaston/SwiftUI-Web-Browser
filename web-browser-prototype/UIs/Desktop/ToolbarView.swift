@@ -16,7 +16,7 @@ struct ToolBarView: ToolbarContent {
     }
     
     var body: some ToolbarContent {
-        ToolbarItemGroup(placement: .primaryAction) {
+        ToolbarItemGroup(placement: .navigation) {
             Button {
                 browserManager.goBack()
             } label: {
@@ -35,6 +35,14 @@ struct ToolBarView: ToolbarContent {
         ToolbarItem(placement: .principal) {
             AddressBar(browserManager: browserManager)
                 .frame(width: 350)
+        }
+        
+        ToolbarItem(placement: .primaryAction) {
+            Button {
+                browserManager.createTab()
+            } label: {
+                Image(systemName: "plus")
+            }
         }
     }
 }

@@ -95,8 +95,8 @@ class BrowserTabManager {
     }
     
     func createTab(
-        title: String,
-        urlString: String,
+        title: String = "New Tab",
+        urlString: String = "https://google.com",
         in groupID: UUID? = nil
     ) {
         guard let url = URL(string: urlString) else {

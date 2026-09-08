@@ -57,9 +57,10 @@ struct AddressBar: View {
                 Image(systemName: "arrow.trianglehead.clockwise.rotate.90")
                     .foregroundColor(.gray)
             }
+            .buttonStyle(.plain)
         }
         .clipShape(Capsule())
-        .padding(.leading, 12)
+        .padding(.horizontal, 12)
         .overlay(alignment: .bottom) {
             GeometryReader { geometry in
                 Rectangle()
