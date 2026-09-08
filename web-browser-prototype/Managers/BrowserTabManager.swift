@@ -124,29 +124,14 @@ class BrowserTabManager {
     }
 
     func destroyTab(
-        at offsets: IndexSet,
+        tab tabId: UUID,
         in groupID: UUID
     ) {
-        guard let groupIndex = tabGroups.firstIndex(where: {
-            $0.id == groupID
-        }) else {
+        guard let groupIndex = tabGroups.firstIndex(where: { $0.id == groupID }) else {
             return
         }
 
-        let removedTabs = offsets.map {
-            tabGroups[groupIndex].tabs[$0]
-        }
-
-        tabGroups[groupIndex].tabs.remove(atOffsets: offsets)
-
-        if let activeTabId,
-           removedTabs.contains(where: {
-               $0.id == activeTabId
-           }) {
-
-            self.activeTabId =
-                tabGroups[groupIndex].tabs.first?.id
-        }
+        tabGroups[groupIndex].tabs.removeAll { $0.id == tabId }
     }
 
     func moveTab(

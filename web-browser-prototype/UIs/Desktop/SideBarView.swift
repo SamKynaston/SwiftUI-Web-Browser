@@ -14,7 +14,7 @@ struct SideBarView: View {
         List {
             Section {
                 ForEach(browserManager.tabGroups) { group in
-                    VStack(spacing: 8) {
+                    VStack(spacing: 12) {
                         Button {
                             browserManager.selectGroup(group)
                         } label: {
@@ -24,29 +24,41 @@ struct SideBarView: View {
 
                                 Text(group.name)
                                     .lineLimit(1)
-
+                                
                                 Spacer()
+                                
+                                Button {
+                                    browserManager.createTab(title: "Default", urlString: "https://google.com", in: group.id)
+                                } label: {
+                                    Image(systemName: "plus.square")
+                                        .foregroundStyle(.tint)
+                                }
+                                .buttonStyle(.plain)
                             }
                         }
                         .buttonStyle(.plain)
-                        .padding(.vertical, 2)
                         
                         if browserManager.activeGroupId == group.id {
                             ForEach(group.tabs) { tab in
                                 Button {
-                                    browserManager.selectTab(
-                                        tab,
-                                        in: group
-                                    )
+                                    browserManager.selectTab(tab, in: group)
                                 } label: {
                                     HStack(spacing: 8) {
                                         Image(systemName: "globe")
                                             .foregroundStyle(.tint)
-
+                                        
                                         Text(tab.title)
                                             .lineLimit(1)
 
                                         Spacer()
+                                        
+                                        Button {
+                                            browserManager.destroyTab(tab: tab.id, in: group.id)
+                                        } label: {
+                                            Image(systemName: "xmark.circle")
+                                                .foregroundStyle(.red)
+                                        }
+                                        .buttonStyle(.plain)
                                     }
                                     .padding(.leading, 8)
                                     .contentShape(Rectangle())
@@ -56,6 +68,8 @@ struct SideBarView: View {
                         }
                     }
                 }
+                .padding(.top, 12)
+                
             } header: {
                 Text("Tab Groups")
                     .font(.headline)
