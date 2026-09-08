@@ -9,10 +9,12 @@ import SwiftUI
 
 struct TabGroupModel: Identifiable {
     let id: UUID
-    let tabs: [TabModel]
+    var name: String
+    var tabs: [TabModel]
     
-    public init(tabs: [TabModel]) {
+    init(name: String, tabs: [TabModel]) {
         self.id = UUID()
+        self.name = name
         self.tabs = tabs
     }
 }

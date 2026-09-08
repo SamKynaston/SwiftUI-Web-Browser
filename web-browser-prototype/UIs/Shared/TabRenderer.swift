@@ -12,9 +12,13 @@ struct TabRenderer: View {
 
     var body: some View {
         GeometryReader { geometry in
-            ForEach(browserManager.tabs) { tab in
-                tabWebView(
-                    tab: tab,
+            if let tab = browserManager.activeTab {
+                WebRenderer(
+                    url: tab.url,
+                    manager: tab.browserWebManager
+                )
+                .id(tab.id)
+                .frame(
                     width: geometry.size.width,
                     height: geometry.size.height
                 )
@@ -24,7 +28,7 @@ struct TabRenderer: View {
     }
     
     private func tabWebView(
-        tab: BrowserTabModel,
+        tab: TabModel,
         width: CGFloat,
         height: CGFloat
     ) -> some View {
@@ -34,16 +38,11 @@ struct TabRenderer: View {
         )
         .id(tab.id)
         .frame(width: width, height: height)
-        .offset(
-            x: tabOffset(
-                tab: tab,
-                width: width
-            )
-        )
     }
 
-    private func tabOffset(
-        tab: BrowserTabModel,
+    // For reuse at a later date.
+    /*private func tabOffset(
+        tab: TabModel,
         width: CGFloat
     ) -> CGFloat {
         if tab.id == browserManager.activeTabId {
@@ -57,5 +56,5 @@ struct TabRenderer: View {
         }
 
         return width * 2
-    }
+    }*/
 }

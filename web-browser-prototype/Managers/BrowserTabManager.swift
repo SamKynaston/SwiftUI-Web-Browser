@@ -11,87 +11,171 @@ import WebKit
 
 @Observable
 class BrowserTabManager {
-    var tabs: [TabModel] =  [
-        TabModel(title: "Google", url: URL(string: "https://www.google.com")!),
-        TabModel(title: "Amazon", url: URL(string: "https://www.amazon.com")!)
+    var tabGroups: [TabGroupModel] = [
+        TabGroupModel(name: "Default", tabs: [
+            TabModel(title: "Google", url: URL(string: "https://www.google.com")!),
+            TabModel(title: "Amazon", url: URL(string: "https://www.amazon.com")!)
+        ]),
+        
+        TabGroupModel(name: "Default2", tabs: [
+            TabModel(title: "Google", url: URL(string: "https://www.google.com")!),
+            TabModel(title: "Amazon", url: URL(string: "https://www.amazon.com")!)
+        ])
     ]
     
     var tabSwitchDirection: Int = 0
     var activeTabId: UUID?
-    
+    var activeGroupId: UUID?
+
     init() {
-        activeTabId = tabs.first?.id
+        activeGroupId = tabGroups.first?.id
+        activeTabId = tabGroups.first?.tabs.first?.id
     }
-    
-    var adjacentTabId: UUID? {
-        guard let activeTabId,
-              let index = tabs.firstIndex(where: {
-                  $0.id == activeTabId
-              }),
-              tabs.count > 1
-        else {
+
+    var browserTabs: [TabModel] {
+        tabGroups.flatMap(\.tabs)
+    }
+
+    var activeTab: TabModel? {
+        guard let activeTabId else {
             return nil
         }
 
-        if tabSwitchDirection > 0 {
-            let nextIndex = (index + 1) % tabs.count
-            return tabs[nextIndex].id
-        } else {
-            let previousIndex = (index - 1 + tabs.count) % tabs.count
-            return tabs[previousIndex].id
-        }
-    }
-    
-    var activeTab: TabModel? {
-        guard let activeTabId else { return nil }
-
-        return tabs.first {
+        return browserTabs.first {
             $0.id == activeTabId
         }
     }
+
+    var activeGroup: TabGroupModel? {
+        guard let activeGroupId else {
+            return nil
+        }
+
+        return tabGroups.first {
+            $0.id == activeGroupId
+        }
+    }
     
-    func createTab(title: String, urlString: String) {
-        guard let url = URL(string: urlString) else { return }
-        let newTab = TabModel(title: title, url: url)
-        tabs.append(newTab)
+    func selectGroup(_ group: TabGroupModel) {
+        activeGroupId = group.id
+        activeTabId = group.tabs.first?.id
+    }
+
+    func selectGroup(id: UUID) {
+        guard let group = tabGroups.first(where: {
+            $0.id == id
+        }) else {
+            return
+        }
+
+        selectGroup(group)
+    }
+
+    func selectTab(_ tab: TabModel, in group: TabGroupModel) {
+        activeGroupId = group.id
+        activeTabId = tab.id
+    }
+    
+    func createTabGroup(name: String) {
+        let group = TabGroupModel(
+            name: name,
+            tabs: []
+        )
+
+        tabGroups.append(group)
+
+        activeGroupId = group.id
+        activeTabId = nil
+    }
+
+    func getTabGroup(id: UUID) -> TabGroupModel? {
+        tabGroups.first {
+            $0.id == id
+        }
+    }
+    
+    func createTab(
+        title: String,
+        urlString: String,
+        in groupID: UUID? = nil
+    ) {
+        guard let url = URL(string: urlString) else {
+            return
+        }
+
+        let newTab = TabModel(
+            title: title,
+            url: url
+        )
+
+        let targetGroupID = groupID ?? activeGroupId
+
+        guard let targetGroupID,
+              let groupIndex = tabGroups.firstIndex(where: {
+                  $0.id == targetGroupID
+              }) else {
+            return
+        }
+
+        tabGroups[groupIndex].tabs.append(newTab)
+
+        activeGroupId = targetGroupID
         activeTabId = newTab.id
     }
-    
-    func destroyTab(at offsets: IndexSet) {
-        tabs.remove(atOffsets: offsets)
+
+    func destroyTab(
+        at offsets: IndexSet,
+        in groupID: UUID
+    ) {
+        guard let groupIndex = tabGroups.firstIndex(where: {
+            $0.id == groupID
+        }) else {
+            return
+        }
+
+        let removedTabs = offsets.map {
+            tabGroups[groupIndex].tabs[$0]
+        }
+
+        tabGroups[groupIndex].tabs.remove(atOffsets: offsets)
+
+        if let activeTabId,
+           removedTabs.contains(where: {
+               $0.id == activeTabId
+           }) {
+
+            self.activeTabId =
+                tabGroups[groupIndex].tabs.first?.id
+        }
     }
-    
-    func getTab(UUID: UUID) -> TabModel? {
-        tabs.first { $0.id == UUID }
+
+    func moveTab(
+        from source: IndexSet,
+        to destination: Int,
+        in groupID: UUID
+    ) {
+        guard let groupIndex = tabGroups.firstIndex(where: {
+            $0.id == groupID
+        }) else {
+            return
+        }
+
+        tabGroups[groupIndex].tabs.move(
+            fromOffsets: source,
+            toOffset: destination
+        )
     }
-    
-    func switchToNextTab() {
-        guard let activeTabId,
-              let index = tabs.firstIndex(where: { $0.id == activeTabId }),
-              !tabs.isEmpty
-        else { return }
-        
-        let nextIndex = (index + 1) % tabs.count
-        
-        tabSwitchDirection = 1
-        self.activeTabId = tabs[nextIndex].id
-    }
-    
-    func switchToPreviousTab() {
-        guard let activeTabId,
-              let index = tabs.firstIndex(where: { $0.id == activeTabId })
-        else { return }
-        
-        let prevIndex = (index - 1 + tabs.count) % tabs.count
-        
-        tabSwitchDirection = -1
-        self.activeTabId = tabs[prevIndex].id
+
+    func getTab(id: UUID) -> TabModel? {
+        browserTabs.first {
+            $0.id == id
+        }
     }
     
     func navigate(to url: String) {
         activeTab?.browserWebManager.navigate(to: url)
     }
-    
+
     func goBack() {
         activeTab?.browserWebManager.goBack()
     }
@@ -102,5 +186,35 @@ class BrowserTabManager {
 
     func reload() {
         activeTab?.browserWebManager.reload()
+    }
+    
+    func switchToNextTab() {
+        guard let activeTabId,
+              let index = browserTabs.firstIndex(where: {
+                  $0.id == activeTabId
+              }),
+              !browserTabs.isEmpty else {
+            return
+        }
+
+        let nextIndex = (index + 1) % browserTabs.count
+
+        tabSwitchDirection = 1
+        self.activeTabId = browserTabs[nextIndex].id
+    }
+
+    func switchToPreviousTab() {
+        guard let activeTabId,
+              let index = browserTabs.firstIndex(where: {
+                  $0.id == activeTabId
+              }) else {
+            return
+        }
+
+        let previousIndex =
+            (index - 1 + browserTabs.count) % browserTabs.count
+
+        tabSwitchDirection = -1
+        self.activeTabId = browserTabs[previousIndex].id
     }
 }
