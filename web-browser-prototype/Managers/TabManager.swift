@@ -26,7 +26,6 @@ class TabManager {
     var tabSwitchDirection: Int = 0
     var activeTabId: UUID?
     var activeGroupId: UUID?
-    var onNavigationChange: ((URL?, String) -> Void)?
 
     var canGoBack = false
     var canGoForward = false

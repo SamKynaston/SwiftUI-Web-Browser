@@ -11,15 +11,17 @@ struct TabRenderer: View {
     @Bindable var tabManager: TabManager
 
     var body: some View {
-        GeometryReader { geometry in
-            if let tab = tabManager.activeTab {
+        ZStack {
+            ForEach(tabManager.browserTabs) { tab in
                 WebRenderer(
                     url: tab.url,
-                    manager: tabManager
+                    manager: tabManager,
+                    tab: tab
                 )
                 .id(tab.id)
+                .opacity(tab.id == tabManager.activeTabId ? 1 : 0)
+                .zIndex(tab.id == tabManager.activeTabId ? 1 : 0)
             }
         }
-        .clipped()
     }
 }

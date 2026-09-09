@@ -17,9 +17,10 @@ typealias ViewRepresentable = UIViewRepresentable
 struct WebRenderer: ViewRepresentable {
     let url: URL
     let manager: TabManager
-    
+    var tab: TabModel
+
     func makeCoordinator() -> Coordinator {
-        Coordinator(manager: manager)
+        Coordinator(manager: manager, tab: tab)
     }
     
     #if os(macOS)
@@ -45,6 +46,10 @@ struct WebRenderer: ViewRepresentable {
     #endif
     
     private func makeWebView(context: Context) -> WKWebView {
+        if let existingWebView = manager.getTab(id: tab.id)?.webView {
+            return existingWebView
+        }
+        
         let webView = WKWebView()
         webView.navigationDelegate = context.coordinator
         
@@ -56,15 +61,13 @@ struct WebRenderer: ViewRepresentable {
         webView.setValue(false, forKey: "drawsBackground")
         #endif
         
-        if let url = manager.activeTab?.url {
-                webView.load(URLRequest(url: url))
-        }
+        webView.load(URLRequest(url: url))
         
         context.coordinator.observeProgress(of: webView)
         
-        manager.setActiveTabWebview(webView)
+        manager.setTabWebview(webView, for: tab.id)
         
-        manager.onNavigationChange = { url, title in
+        tab.onNavigationChange = { url, title in
             if let url {
                 manager.setActiveTabUrl(url)
             }
@@ -82,9 +85,11 @@ struct WebRenderer: ViewRepresentable {
         private var progressObservation: NSKeyValueObservation?
         
         let manager: TabManager
+        let tab: TabModel
 
-        init(manager: TabManager) {
+        init(manager: TabManager, tab: TabModel) {
             self.manager = manager
+            self.tab = tab
         }
         
         func observeProgress(of webView: WKWebView) {
@@ -144,11 +149,15 @@ struct WebRenderer: ViewRepresentable {
                 manager.setActiveTabUrl(url)
             }
             
-            manager.setActiveTabTitle(webView.title ?? "New Tab")
+            tab.title = webView.title ?? "New Tab"
+            
+            guard manager.activeTabId == tab.id else {
+                return
+            }
+
             manager.canGoBack = webView.canGoBack
             manager.canGoForward = webView.canGoForward
-
-            manager.onNavigationChange?(webView.url, webView.title ?? "New Tab")
+            manager.isLoading = webView.isLoading
         }
     }
 }

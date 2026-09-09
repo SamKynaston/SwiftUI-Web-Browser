@@ -172,4 +172,31 @@ extension TabManager {
             }
         }
     }
+    
+    func setTabTitle(_ title: String, for tabId: UUID) {
+        for groupIndex in tabGroups.indices {
+            if let tabIndex = tabGroups[groupIndex].tabs.firstIndex(where: { $0.id == tabId }) {
+                tabGroups[groupIndex].tabs[tabIndex].title = title
+                return
+            }
+        }
+    }
+    
+    func setTabUrl(_ url: URL, for tabId: UUID) {
+        for groupIndex in tabGroups.indices {
+            if let tabIndex = tabGroups[groupIndex].tabs.firstIndex(where: { $0.id == tabId }) {
+                tabGroups[groupIndex].tabs[tabIndex].url = url
+                return
+            }
+        }
+    }
+    
+    func setTabWebview(_ webview: WKWebView, for tabId: UUID) {
+        for groupIndex in tabGroups.indices {
+            if let tabIndex = tabGroups[groupIndex].tabs.firstIndex(where: { $0.id == tabId }) {
+                tabGroups[groupIndex].tabs[tabIndex].webView = webview
+                return
+            }
+        }
+    }
 }
