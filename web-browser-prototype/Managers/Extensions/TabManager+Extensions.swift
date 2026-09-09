@@ -92,9 +92,6 @@ extension TabManager {
     
     func destroyTabGroup(_ groupID: UUID?) {
         let targetGroupId = groupID ?? activeGroupId
-        guard let groupIndex = tabGroups.firstIndex(where: { $0.id == targetGroupId }) else {
-            return
-        }
         
         destroyAllTabsInGroup(targetGroupId)
         
