@@ -47,6 +47,7 @@ struct MainTabletView: View {
                 .toolbar {
                     ToolBarView(tabManager: tabManager)
                 }
+                .ignoresSafeArea(.keyboard, edges: .bottom)
         }
     }
 }
@@ -55,12 +56,12 @@ struct MainMobileView: View {
     @Bindable var tabManager: TabManager
     
     var body: some View {
-        ZStack(alignment: .bottom) {
+        NavigationStack {
             TabRenderer(tabManager: tabManager)
                 .ignoresSafeArea(.container, edges: .bottom)
-        }
-        .toolbar {
-            ToolBarView(tabManager: tabManager)
+                .toolbar {
+                    ToolBarView(tabManager: tabManager)
+                }
         }
     }
 }
