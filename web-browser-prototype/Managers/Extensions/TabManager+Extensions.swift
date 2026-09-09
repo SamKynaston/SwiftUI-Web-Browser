@@ -78,6 +78,10 @@ extension TabManager {
 
         tabGroups[groupIndex].tabs.removeAll { $0.id == tabId }
     }
+    
+    func destroyTabGroup(_ groupID: UUID?) {
+        tabGroups.removeAll(where: { $0.id == groupID ?? activeGroupId })
+    }
 
     func moveTab(from source: IndexSet, to destination: Int, in groupID: UUID) {
         guard let groupIndex = tabGroups.firstIndex(where: {
