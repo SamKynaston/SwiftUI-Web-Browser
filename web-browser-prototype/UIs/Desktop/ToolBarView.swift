@@ -51,6 +51,12 @@ struct ToolBarView: ToolbarContent {
                 } label: {
                     Image(systemName: "square.on.square")
                 }
+                
+                Button {
+                    tabManager.createTab()
+                } label: {
+                    Image(systemName: "plus")
+                }
             }
         }
         #else
