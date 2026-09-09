@@ -8,14 +8,14 @@
 import SwiftUI
 
 struct TabRenderer: View {
-    @Bindable var browserManager: TabManager
+    @Bindable var tabManager: TabManager
 
     var body: some View {
         GeometryReader { geometry in
-            if let tab = browserManager.activeTab {
+            if let tab = tabManager.activeTab {
                 WebRenderer(
                     url: tab.url,
-                    manager: browserManager
+                    manager: tabManager
                 )
                 .id(tab.id)
             }
@@ -30,7 +30,7 @@ struct TabRenderer: View {
     ) -> some View {
         WebRenderer(
             url: tab.url,
-            manager: browserManager
+            manager: tabManager
         )
         .id(tab.id)
         .frame(width: width, height: height)

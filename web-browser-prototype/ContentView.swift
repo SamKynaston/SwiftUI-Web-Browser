@@ -2,11 +2,11 @@ import SwiftUI
 
 #if os(macOS)
 struct MainDesktopView: View {
-    @Bindable var browserManager: TabManager
+    @Bindable var tabManager: TabManager
 
     var body: some View {
         NavigationSplitView {
-            SideBarView(browserManager: browserManager)
+            SideBarView(tabManager: tabManager)
                 .toolbar {
                     ToolbarItem(placement: .automatic) {
                         Button {
@@ -17,9 +17,9 @@ struct MainDesktopView: View {
                     }
                 }
         } detail: {
-            TabRenderer(browserManager: browserManager)
+            TabRenderer(tabManager: tabManager)
                 .toolbar {
-                    ToolBarView(browserManager: browserManager)
+                    ToolBarView(tabManager: tabManager)
                 }
         }
     }
@@ -28,33 +28,33 @@ struct MainDesktopView: View {
 
 #if os(iOS)
 struct MainMobileView: View {
-    @Bindable var browserManager: BrowserTabManager
+    @Bindable var tabManager: TabManager
 
     var body: some View {
         ZStack(alignment: .bottom) {
-            TabRenderer(browserManager: browserManager)
+            TabRenderer(tabManager: tabManager)
                 .ignoresSafeArea(.container, edges: .bottom)
             
-            AddressBar(browserManager: browserManager)
+            /*AddressBar(browserManager: browserManager)
                 .padding(.horizontal, 16)
                 .padding(.vertical, 12)
                 .glassEffect(.regular.interactive(), in: .capsule)
                 .padding(.horizontal)
                 .keyboardType(.webSearch)
-                .textInputAutocapitalization(.never)
+                .textInputAutocapitalization(.never)*/
         }
     }
 }
 #endif
 
 struct ContentView: View {
-    @State var browserManager = TabManager()
+    @State var tabManager = TabManager()
     
     var body: some View {
         #if os(macOS)
-            MainDesktopView(browserManager: browserManager)
+            MainDesktopView(tabManager: tabManager)
         #elseif os(iOS)
-            MainMobileView(browserManager: browserManager)
+            MainMobileView(tabManager: tabManager)
         #endif
     }
 }

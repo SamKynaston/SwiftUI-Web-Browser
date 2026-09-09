@@ -11,7 +11,18 @@ import WebKit
 
 @Observable
 class TabManager {
-    var tabGroups: [TabGroupModel] = []
+    var tabGroups: [TabGroupModel] = [
+        TabGroupModel(name: "Default", tabs: [
+            TabModel(url: URL(string: "https://www.google.com")!),
+            TabModel(url: URL(string: "https://www.amazon.com")!)
+        ]),
+        
+        TabGroupModel(name: "Default2", tabs: [
+            TabModel(url: URL(string: "https://www.google.com")!),
+            TabModel(url: URL(string: "https://www.amazon.com")!)
+        ])
+    ]
+    
     var tabSwitchDirection: Int = 0
     var activeTabId: UUID?
     var activeGroupId: UUID?

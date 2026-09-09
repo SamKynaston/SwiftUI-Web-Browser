@@ -8,22 +8,11 @@
 import SwiftUI
 
 struct AddressBar: View {
-    @Bindable var browserManager: TabManager
+    @Bindable var tabManager: TabManager
     @State var text: String = ""
-
-    init(browserManager: TabManager) {
-        self.browserManager = browserManager
-
-        let url = browserManager.activeTab?.url
-            ?? browserManager.activeTab?.url
-
-        _text = State(
-            initialValue: url?.absoluteString ?? ""
-        )
-    }
     
     private var loadingProgress: Double {
-        browserManager.loadingProgress
+        tabManager.loadingProgress
     }
     
     var body: some View {
@@ -36,21 +25,21 @@ struct AddressBar: View {
                 text: $text
             )
             .textFieldStyle(.plain)
-            .onChange(of: browserManager.activeTab?.url) {
-                text = browserManager.activeTab?.url.absoluteString ?? ""
+            .onChange(of: tabManager.activeTab?.url) {
+                text = tabManager.activeTab?.url.absoluteString ?? ""
             }
-            .onChange(of: browserManager.activeTabId) {
+            .onChange(of: tabManager.activeTabId) {
                 text =
-                    browserManager.activeTab?.url.absoluteString
-                    ?? browserManager.activeTab?.url.absoluteString
+                    tabManager.activeTab?.url.absoluteString
+                    ?? tabManager.activeTab?.url.absoluteString
                     ?? ""
             }
             .onSubmit() {
-                browserManager.navigate(to: text)
+                tabManager.navigate(to: text)
             }
             
             Button {
-                browserManager.reload()
+                tabManager.reload()
             } label: {
                 Image(systemName: "arrow.trianglehead.clockwise.rotate.90")
                     .foregroundColor(.gray)
@@ -70,7 +59,7 @@ struct AddressBar: View {
                     .allowsHitTesting(false)
             }
             .opacity(
-                browserManager.isLoading == true
+                tabManager.isLoading == true
                     ? 1
                     : 0
             )

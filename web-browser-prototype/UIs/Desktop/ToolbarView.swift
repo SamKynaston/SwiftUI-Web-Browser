@@ -9,40 +9,40 @@ import SwiftUI
 import WebKit
 
 struct ToolBarView: ToolbarContent {
-    @Bindable var browserManager: TabManager
+    @Bindable var tabManager: TabManager
 
     var activeTab: TabModel? {
-        browserManager.activeTab
+        tabManager.activeTab
     }
     
     var body: some ToolbarContent {
         ToolbarItemGroup(placement: .navigation) {
             ControlGroup {
                 Button {
-                    browserManager.goBack()
+                    tabManager.goBack()
                 } label: {
                     Image(systemName: "chevron.backward")
                 }
-                .disabled(!browserManager.canGoBack)
+                .disabled(!tabManager.canGoBack)
 
                 Button {
-                    browserManager.goForward()
+                    tabManager.goForward()
                 } label: {
                     Image(systemName: "chevron.forward")
                 }
-                .disabled(!browserManager.canGoForward)
+                .disabled(!tabManager.canGoForward)
             }
             .controlGroupStyle(.navigation)
         }
         
         ToolbarItem(placement: .principal) {
-            AddressBar(browserManager: browserManager)
+            AddressBar(tabManager: tabManager)
                 .frame(width: 350)
         }
         
         ToolbarItem(placement: .primaryAction) {
             Button {
-                browserManager.createTab()
+                tabManager.createTab()
             } label: {
                 Image(systemName: "plus")
             }
