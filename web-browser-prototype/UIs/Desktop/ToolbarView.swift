@@ -23,14 +23,14 @@ struct ToolBarView: ToolbarContent {
                 } label: {
                     Image(systemName: "chevron.backward")
                 }
-                .disabled(browserManager.canGoBack == nil)
-          
+                .disabled(!browserManager.canGoBack)
+
                 Button {
                     browserManager.goForward()
                 } label: {
                     Image(systemName: "chevron.forward")
                 }
-                .disabled(!(browserManager.canGoBack == nil))
+                .disabled(!browserManager.canGoForward)
             }
             .controlGroupStyle(.navigation)
         }

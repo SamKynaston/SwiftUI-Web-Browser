@@ -65,8 +65,10 @@ struct WebRenderer: ViewRepresentable {
         manager.setActiveTabWebview(webView)
         
         manager.onNavigationChange = { url, title in
-            //manager.activeTab?.url = url
-            //manager.title = title
+            if let url {
+                manager.setActiveTabUrl(url)
+            }
+            manager.setActiveTabTitle(title)
         }
         
         return webView
