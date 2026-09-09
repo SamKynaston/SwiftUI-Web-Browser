@@ -22,35 +22,4 @@ struct TabRenderer: View {
         }
         .clipped()
     }
-    
-    private func tabWebView(
-        tab: TabModel,
-        width: CGFloat,
-        height: CGFloat
-    ) -> some View {
-        WebRenderer(
-            url: tab.url,
-            manager: tabManager
-        )
-        .id(tab.id)
-        .frame(width: width, height: height)
-    }
-
-    // For reuse at a later date.
-    /*private func tabOffset(
-        tab: TabModel,
-        width: CGFloat
-    ) -> CGFloat {
-        if tab.id == browserManager.activeTabId {
-            return 0
-        }
-
-        if tab.id == browserManager.adjacentTabId {
-            return browserManager.tabSwitchDirection > 0
-                ? width
-                : -width
-        }
-
-        return width * 2
-    }*/
 }

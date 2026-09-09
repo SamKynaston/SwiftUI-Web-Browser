@@ -28,12 +28,6 @@ struct AddressBar: View {
             .onChange(of: tabManager.activeTab?.url) {
                 text = tabManager.activeTab?.url.absoluteString ?? ""
             }
-            .onChange(of: tabManager.activeTabId) {
-                text =
-                    tabManager.activeTab?.url.absoluteString
-                    ?? tabManager.activeTab?.url.absoluteString
-                    ?? ""
-            }
             .onSubmit() {
                 tabManager.navigate(to: text)
             }
