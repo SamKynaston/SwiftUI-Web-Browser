@@ -26,8 +26,14 @@ struct AddressBar: View {
             )
             .foregroundColor(.gray)
             .textFieldStyle(.plain)
+            .onChange(of: tabManager.activeTabId) {
+                text = tabManager.activeTab?.url.absoluteString ?? ""
+            }
             .onChange(of: tabManager.activeTab?.url) {
                 text = tabManager.activeTab?.url.absoluteString ?? ""
+            }
+            .onSubmit {
+                tabManager.navigate(to: text)
             }
             .onSubmit() {
                 tabManager.navigate(to: text)

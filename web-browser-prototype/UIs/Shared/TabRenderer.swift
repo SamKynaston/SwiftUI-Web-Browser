@@ -16,7 +16,7 @@ struct TabRenderer: View {
                 WebRenderer(
                     url: tab.url,
                     manager: tabManager,
-                    tab: tab
+                    tabId: tab.id
                 )
                 .id(tab.id)
                 .opacity(tab.id == tabManager.activeTabId ? 1 : 0)

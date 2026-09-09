@@ -75,8 +75,21 @@ extension TabManager {
         guard let groupIndex = tabGroups.firstIndex(where: { $0.id == groupID }) else {
             return
         }
-
+        
+        if let tabIndex = tabGroups[groupIndex].tabs.firstIndex(where: { $0.id == tabId }) {
+            let tab = tabGroups[groupIndex].tabs[tabIndex]
+            
+            tab.webView?.navigationDelegate = nil
+            tab.webView?.stopLoading()
+            tab.webView = nil
+            tab.onNavigationChange = nil  // Break closure reference
+        }
+        
         tabGroups[groupIndex].tabs.removeAll { $0.id == tabId }
+        
+        if activeTabId == tabId {
+            activeTabId = tabGroups[groupIndex].tabs.first?.id
+        }
     }
     
     func destroyTabGroup(_ groupID: UUID?) {
@@ -204,7 +217,14 @@ extension TabManager {
         guard let groupIndex = tabGroups.firstIndex(where: { $0.id == groupId }) else {
             return
         }
-
+        
+        for tab in tabGroups[groupIndex].tabs {
+            tab.webView?.navigationDelegate = nil
+            tab.webView?.stopLoading()
+            tab.webView = nil
+            tab.onNavigationChange = nil
+        }
+        
         tabGroups[groupIndex].tabs.removeAll()
 
         if activeGroupId == groupId {
