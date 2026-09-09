@@ -8,7 +8,7 @@
 import SwiftUI
 import WebKit
 
-struct ToolBarView: ToolbarContent {
+struct DesktopToolBarView: ToolbarContent {
     @Bindable var tabManager: TabManager
 
     var activeTab: TabModel? {

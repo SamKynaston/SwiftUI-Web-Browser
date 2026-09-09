@@ -19,7 +19,7 @@ struct MainDesktopView: View {
         } detail: {
             TabRenderer(tabManager: tabManager)
                 .toolbar {
-                    ToolBarView(tabManager: tabManager)
+                    DesktopToolBarView(tabManager: tabManager)
                 }
         }
     }
@@ -27,9 +27,33 @@ struct MainDesktopView: View {
 #endif
 
 #if os(iOS)
+struct MainiPadView: View {
+    @Bindable var tabManager: TabManager
+    
+    var body: some View {
+        NavigationSplitView {
+            SideBarView(tabManager: tabManager)
+                .toolbar {
+                    ToolbarItem(placement: .automatic) {
+                        Button {
+                            tabManager.createTabGroup(name: "Default")
+                        } label: {
+                            Image(systemName: "rectangle.badge.plus")
+                        }
+                    }
+                }
+        } detail: {
+            TabRenderer(tabManager: tabManager)
+                .toolbar {
+                    DesktopToolBarView(tabManager: tabManager)
+                }
+        }
+    }
+}
+
 struct MainMobileView: View {
     @Bindable var tabManager: TabManager
-
+    
     var body: some View {
         ZStack(alignment: .bottom) {
             TabRenderer(tabManager: tabManager)
@@ -43,18 +67,26 @@ struct MainMobileView: View {
                 .keyboardType(.webSearch)
                 .textInputAutocapitalization(.never)*/
         }
+        .toolbar {
+            MobileToolbarView(tabManager: tabManager)
+        }
     }
 }
 #endif
 
 struct ContentView: View {
     @State var tabManager = TabManager()
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     
     var body: some View {
         #if os(macOS)
             MainDesktopView(tabManager: tabManager)
         #elseif os(iOS)
+        if horizontalSizeClass == .regular {
+            MainiPadView(tabManager: tabManager)
+        } else {
             MainMobileView(tabManager: tabManager)
+        }
         #endif
     }
 }

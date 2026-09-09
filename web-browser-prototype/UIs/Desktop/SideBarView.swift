@@ -8,15 +8,15 @@
 import SwiftUI
 
 struct SideBarView: View {
-    @Bindable var browserManager: TabManager
+    @Bindable var tabManager: TabManager
 
     var body: some View {
         List {
             Section {
-                ForEach(browserManager.tabGroups) { group in
+                ForEach(tabManager.tabGroups) { group in
                     VStack(spacing: 0) {
                         Button {
-                            browserManager.selectGroup(group)
+                            tabManager.selectGroup(group)
                         } label: {
                             HStack(spacing: 8) {
                                 Image(systemName: "square.on.square")
@@ -28,7 +28,7 @@ struct SideBarView: View {
                                 Spacer()
                                 
                                 Button {
-                                    browserManager.createTab(urlString: "https://google.com", in: group.id)
+                                    tabManager.createTab(urlString: "https://google.com", in: group.id)
                                 } label: {
                                     Image(systemName: "plus.square")
                                         .foregroundStyle(.tint)
@@ -38,11 +38,11 @@ struct SideBarView: View {
                         }
                         .buttonStyle(.plain)
                         
-                        if browserManager.activeGroupId == group.id {
+                        if tabManager.activeGroupId == group.id {
                             Spacer()
                             ForEach(group.tabs) { tab in
                                 Button {
-                                    browserManager.selectTab(tab, in: group)
+                                    tabManager.selectTab(tab, in: group)
                                 } label: {
                                     HStack(spacing: 8) {
                                         Image(systemName: "globe")
@@ -54,7 +54,7 @@ struct SideBarView: View {
                                         Spacer()
                                         
                                         Button {
-                                            browserManager.destroyTab(tab: tab.id, in: group.id)
+                                            tabManager.destroyTab(tab: tab.id, in: group.id)
                                         } label: {
                                             Image(systemName: "xmark.circle")
                                                 .foregroundStyle(.red)
@@ -66,7 +66,7 @@ struct SideBarView: View {
                                     .background {
                                         RoundedRectangle(cornerRadius: 6)
                                             .fill(
-                                                browserManager.activeTabId == tab.id
+                                                tabManager.activeTabId == tab.id
                                                 ? Color.accentColor.opacity(0.15)
                                                 : .clear
                                             )
