@@ -81,8 +81,6 @@ extension TabManager {
             
             tab.webView?.navigationDelegate = nil
             tab.webView?.stopLoading()
-            tab.webView = nil
-            tab.onNavigationChange = nil  // Break closure reference
         }
         
         tabGroups[groupIndex].tabs.removeAll { $0.id == tabId }
@@ -93,7 +91,19 @@ extension TabManager {
     }
     
     func destroyTabGroup(_ groupID: UUID?) {
-        tabGroups.removeAll(where: { $0.id == groupID ?? activeGroupId })
+        let targetGroupId = groupID ?? activeGroupId
+        guard let groupIndex = tabGroups.firstIndex(where: { $0.id == targetGroupId }) else {
+            return
+        }
+        
+        destroyAllTabsInGroup(targetGroupId)
+        
+        tabGroups.removeAll { $0.id == targetGroupId }
+        
+        if activeGroupId == targetGroupId {
+            activeGroupId = tabGroups.first?.id
+            activeTabId = activeGroup?.tabs.first?.id
+        }
     }
 
     func moveTab(from source: IndexSet, to destination: Int, in groupID: UUID) {
@@ -213,7 +223,7 @@ extension TabManager {
         }
     }
     
-    func destroyAllTabsInGroup(_ groupId: UUID) {
+    func destroyAllTabsInGroup(_ groupId: UUID?) {
         guard let groupIndex = tabGroups.firstIndex(where: { $0.id == groupId }) else {
             return
         }
@@ -221,8 +231,6 @@ extension TabManager {
         for tab in tabGroups[groupIndex].tabs {
             tab.webView?.navigationDelegate = nil
             tab.webView?.stopLoading()
-            tab.webView = nil
-            tab.onNavigationChange = nil
         }
         
         tabGroups[groupIndex].tabs.removeAll()

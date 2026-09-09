@@ -19,4 +19,10 @@ final class TabModel: Identifiable {
     init(url: URL) {
         self.url = url
     }
+    
+    deinit {
+        onNavigationChange = nil
+        webView?.navigationDelegate = nil
+        webView = nil
+    }
 }

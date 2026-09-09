@@ -47,7 +47,9 @@ struct WebRenderer: ViewRepresentable {
     
     private func makeWebView(context: Context) -> WKWebView {
         if let existingWebView = manager.getTab(id: tabId)?.webView {
-            return existingWebView
+            if existingWebView.navigationDelegate != nil {
+                return existingWebView
+            }
         }
         
         let webView = WKWebView()
