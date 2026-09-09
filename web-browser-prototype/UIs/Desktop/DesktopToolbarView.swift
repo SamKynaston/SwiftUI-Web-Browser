@@ -8,6 +8,7 @@
 import SwiftUI
 import WebKit
 
+#if os(macOS)
 struct DesktopToolBarView: ToolbarContent {
     @Bindable var tabManager: TabManager
 
@@ -17,22 +18,7 @@ struct DesktopToolBarView: ToolbarContent {
     
     var body: some ToolbarContent {
         ToolbarItemGroup(placement: .navigation) {
-            ControlGroup {
-                Button {
-                    tabManager.goBack()
-                } label: {
-                    Image(systemName: "chevron.backward")
-                }
-                .disabled(!tabManager.canGoBack)
-
-                Button {
-                    tabManager.goForward()
-                } label: {
-                    Image(systemName: "chevron.forward")
-                }
-                .disabled(!tabManager.canGoForward)
-            }
-            .controlGroupStyle(.navigation)
+            ControlButtons(tabManager: tabManager)
         }
         
         ToolbarItem(placement: .principal) {
@@ -49,3 +35,4 @@ struct DesktopToolBarView: ToolbarContent {
         }
     }
 }
+#endif

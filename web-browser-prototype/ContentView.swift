@@ -10,7 +10,7 @@ struct MainDesktopView: View {
                 .toolbar {
                     ToolbarItem(placement: .automatic) {
                         Button {
-                            browserManager.createTabGroup(name: "Default")
+                            tabManager.createTabGroup(name: "Default")
                         } label: {
                             Image(systemName: "rectangle.badge.plus")
                         }
@@ -58,17 +58,9 @@ struct MainMobileView: View {
         ZStack(alignment: .bottom) {
             TabRenderer(tabManager: tabManager)
                 .ignoresSafeArea(.container, edges: .bottom)
-            
-            /*AddressBar(browserManager: browserManager)
-                .padding(.horizontal, 16)
-                .padding(.vertical, 12)
-                .glassEffect(.regular.interactive(), in: .capsule)
-                .padding(.horizontal)
-                .keyboardType(.webSearch)
-                .textInputAutocapitalization(.never)*/
         }
         .toolbar {
-            MobileToolbarView(tabManager: tabManager)
+            MobileToolBarView(tabManager: tabManager)
         }
     }
 }

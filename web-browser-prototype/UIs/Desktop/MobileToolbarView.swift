@@ -1,5 +1,5 @@
 //
-//  MobileToolbarView.swift
+//  MobileToolvarView.swift
 //  web-browser-prototype
 //
 //  Created by Sam on 09/09/2026.
@@ -8,32 +8,17 @@
 import SwiftUI
 import WebKit
 
-struct MobileToolbarView: ToolbarContent {
+#if os(iOS)
+struct MobileToolBarView: ToolbarContent {
     @Bindable var tabManager: TabManager
 
     var activeTab: TabModel? {
         tabManager.activeTab
     }
-    
+        
     var body: some ToolbarContent {
         ToolbarItemGroup(placement: .bottomBar) {
-            ControlGroup {
-                Button {
-                    tabManager.goBack()
-                } label: {
-                    Image(systemName: "chevron.backward")
-                }
-                .disabled(!tabManager.canGoBack)
-
-                if tabManager.canGoForward {
-                    Button {
-                        tabManager.goForward()
-                    } label: {
-                        Image(systemName: "chevron.forward")
-                    }
-                    .disabled(!tabManager.canGoForward)
-                }
-            }
+            ControlButtons(tabManager: tabManager)
             
             Spacer()
             
@@ -49,3 +34,4 @@ struct MobileToolbarView: ToolbarContent {
         }
     }
 }
+#endif
