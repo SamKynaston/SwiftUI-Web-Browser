@@ -2,7 +2,7 @@ import SwiftUI
 
 #if os(macOS)
 struct MainDesktopView: View {
-    @Bindable var browserManager: BrowserTabManager
+    @Bindable var browserManager: TabManager
 
     var body: some View {
         NavigationSplitView {
@@ -48,7 +48,7 @@ struct MainMobileView: View {
 #endif
 
 struct ContentView: View {
-    @State var browserManager = BrowserTabManager()
+    @State var browserManager = TabManager()
     
     var body: some View {
         #if os(macOS)

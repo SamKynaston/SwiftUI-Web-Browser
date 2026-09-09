@@ -9,7 +9,7 @@ import SwiftUI
 import WebKit
 
 struct ToolBarView: ToolbarContent {
-    @Bindable var browserManager: BrowserTabManager
+    @Bindable var browserManager: TabManager
 
     var activeTab: TabModel? {
         browserManager.activeTab
@@ -23,14 +23,14 @@ struct ToolBarView: ToolbarContent {
                 } label: {
                     Image(systemName: "chevron.backward")
                 }
-                .disabled(!(activeTab?.browserWebManager.canGoBack ?? false))
+                .disabled(browserManager.canGoBack == nil)
           
                 Button {
                     browserManager.goForward()
                 } label: {
                     Image(systemName: "chevron.forward")
                 }
-                .disabled(!(activeTab?.browserWebManager.canGoForward ?? false))
+                .disabled(!(browserManager.canGoBack == nil))
             }
             .controlGroupStyle(.navigation)
         }

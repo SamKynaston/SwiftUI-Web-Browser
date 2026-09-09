@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct SideBarView: View {
-    @Bindable var browserManager: BrowserTabManager
+    @Bindable var browserManager: TabManager
 
     var body: some View {
         List {
@@ -28,7 +28,7 @@ struct SideBarView: View {
                                 Spacer()
                                 
                                 Button {
-                                    browserManager.createTab(title: "Default", urlString: "https://google.com", in: group.id)
+                                    browserManager.createTab(urlString: "https://google.com", in: group.id)
                                 } label: {
                                     Image(systemName: "plus.square")
                                         .foregroundStyle(.tint)
@@ -48,7 +48,7 @@ struct SideBarView: View {
                                         Image(systemName: "globe")
                                             .foregroundStyle(.tint)
                                         
-                                        Text(tab.browserWebManager.title)
+                                        Text(browserManager.activeTab!.title)
                                             .lineLimit(1)
                                         
                                         Spacer()

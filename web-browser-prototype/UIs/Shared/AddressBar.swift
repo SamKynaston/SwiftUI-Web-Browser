@@ -8,13 +8,13 @@
 import SwiftUI
 
 struct AddressBar: View {
-    @Bindable var browserManager: BrowserTabManager
+    @Bindable var browserManager: TabManager
     @State var text: String = ""
 
-    init(browserManager: BrowserTabManager) {
+    init(browserManager: TabManager) {
         self.browserManager = browserManager
 
-        let url = browserManager.activeTab?.browserWebManager.url
+        let url = browserManager.activeTab?.url
             ?? browserManager.activeTab?.url
 
         _text = State(
@@ -23,9 +23,7 @@ struct AddressBar: View {
     }
     
     private var loadingProgress: Double {
-        browserManager.activeTab?
-            .browserWebManager
-            .loadingProgress ?? 0
+        browserManager.loadingProgress
     }
     
     var body: some View {
@@ -38,17 +36,17 @@ struct AddressBar: View {
                 text: $text
             )
             .textFieldStyle(.plain)
-            .onChange(of: browserManager.activeTab?.browserWebManager.url) {
-                text = browserManager.activeTab?.browserWebManager.url?.absoluteString ?? ""
+            .onChange(of: browserManager.activeTab?.url) {
+                text = browserManager.activeTab?.url.absoluteString ?? ""
             }
             .onChange(of: browserManager.activeTabId) {
                 text =
-                    browserManager.activeTab?.browserWebManager.url?.absoluteString
+                    browserManager.activeTab?.url.absoluteString
                     ?? browserManager.activeTab?.url.absoluteString
                     ?? ""
             }
             .onSubmit() {
-                browserManager.activeTab?.browserWebManager.navigate(to: text)
+                browserManager.navigate(to: text)
             }
             
             Button {
@@ -72,7 +70,7 @@ struct AddressBar: View {
                     .allowsHitTesting(false)
             }
             .opacity(
-                browserManager.activeTab?.browserWebManager.isLoading == true
+                browserManager.isLoading == true
                     ? 1
                     : 0
             )

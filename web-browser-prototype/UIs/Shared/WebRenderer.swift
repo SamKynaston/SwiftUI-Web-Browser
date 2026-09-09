@@ -16,7 +16,7 @@ typealias ViewRepresentable = UIViewRepresentable
 
 struct WebRenderer: ViewRepresentable {
     let url: URL
-    let manager: BrowserWebManager
+    let manager: TabManager
     
     func makeCoordinator() -> Coordinator {
         Coordinator(manager: manager)
@@ -56,17 +56,17 @@ struct WebRenderer: ViewRepresentable {
         webView.setValue(false, forKey: "drawsBackground")
         #endif
         
-        if let url = manager.url {
+        if let url = manager.activeTab?.url {
                 webView.load(URLRequest(url: url))
         }
         
         context.coordinator.observeProgress(of: webView)
         
-        manager.webView = webView
+        manager.setActiveTabWebview(webView)
         
         manager.onNavigationChange = { url, title in
-            manager.url = url
-            manager.title = title
+            //manager.activeTab?.url = url
+            //manager.title = title
         }
         
         return webView
@@ -79,9 +79,9 @@ struct WebRenderer: ViewRepresentable {
     final class Coordinator: NSObject, WKNavigationDelegate {
         private var progressObservation: NSKeyValueObservation?
         
-        let manager: BrowserWebManager
+        let manager: TabManager
 
-        init(manager: BrowserWebManager) {
+        init(manager: TabManager) {
             self.manager = manager
         }
         
@@ -138,8 +138,8 @@ struct WebRenderer: ViewRepresentable {
         }
 
         private func updateState(_ webView: WKWebView) {
-            manager.url = webView.url
-            manager.title = webView.title ?? "New Tab"
+            manager.setActiveTabUrl(webView.url!)
+            manager.setActiveTabTitle(webView.title ?? "New Tab")
             manager.canGoBack = webView.canGoBack
             manager.canGoForward = webView.canGoForward
 
