@@ -199,4 +199,16 @@ extension TabManager {
             }
         }
     }
+    
+    func destroyAllTabsInGroup(_ groupId: UUID) {
+        guard let groupIndex = tabGroups.firstIndex(where: { $0.id == groupId }) else {
+            return
+        }
+
+        tabGroups[groupIndex].tabs.removeAll()
+
+        if activeGroupId == groupId {
+            activeTabId = nil
+        }
+    }
 }

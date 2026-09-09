@@ -61,11 +61,18 @@ struct ToolBarView: ToolbarContent {
 
             AddressBar(tabManager: tabManager)
                 .frame(width: 350)
+            
             Spacer()
 
             Button {
             } label: {
                 Image(systemName: "square.on.square")
+            }
+
+            Button {
+                tabManager.createTab()
+            } label: {
+                Image(systemName: "plus")
             }
         }
         #endif

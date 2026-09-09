@@ -25,19 +25,25 @@ struct SideBarTabGroup: View {
                     
                     Spacer()
                     
-                    Button {
+                    /*Button {
                         tabManager.createTab(urlString: "https://google.com", in: group.id)
                     } label: {
                         Image(systemName: "plus.square")
                             .foregroundStyle(.tint)
                     }
-                    .buttonStyle(.plain)
+                    .buttonStyle(.plain)*/
                 }
             }
             .buttonStyle(.plain)
             .contextMenu {
-                Button("Delete Group", role: .destructive) {
+                Button("Open new tab", role: .confirm) {
+                    tabManager.createTab(urlString: "https://google.com", in: group.id)
+                }
+                Button("Delete group", role: .destructive) {
                     tabManager.destroyTabGroup(group.id)
+                }
+                Button("Close all tabs", role: .destructive) {
+                    tabManager.destroyAllTabsInGroup(group.id)
                 }
             }
         }

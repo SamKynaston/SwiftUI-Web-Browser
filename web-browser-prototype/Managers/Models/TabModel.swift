@@ -8,6 +8,7 @@
 import Foundation
 import WebKit
 
+@Observable
 final class TabModel: Identifiable {
     let id = UUID()
     var webView: WKWebView? = nil
