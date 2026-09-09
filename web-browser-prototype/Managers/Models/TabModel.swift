@@ -10,7 +10,7 @@ import WebKit
 
 struct TabModel: Identifiable {
     let id = UUID()
-    var webView: WKWebView? = WKWebView()
+    var webView: WKWebView? = nil
     var title: String = "New Tab"
     var url: URL
 
