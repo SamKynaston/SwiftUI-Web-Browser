@@ -19,7 +19,7 @@ struct MainDesktopView: View {
         } detail: {
             TabRenderer(tabManager: tabManager)
                 .toolbar {
-                    DesktopToolBarView(tabManager: tabManager)
+                    ToolBarView(tabManager: tabManager)
                 }
         }
     }
@@ -27,7 +27,7 @@ struct MainDesktopView: View {
 #endif
 
 #if os(iOS)
-struct MainiPadView: View {
+struct MainTabletView: View {
     @Bindable var tabManager: TabManager
     
     var body: some View {
@@ -45,7 +45,7 @@ struct MainiPadView: View {
         } detail: {
             TabRenderer(tabManager: tabManager)
                 .toolbar {
-                    DesktopToolBarView(tabManager: tabManager)
+                    ToolBarView(tabManager: tabManager)
                 }
         }
     }
@@ -60,7 +60,7 @@ struct MainMobileView: View {
                 .ignoresSafeArea(.container, edges: .bottom)
         }
         .toolbar {
-            MobileToolBarView(tabManager: tabManager)
+            ToolBarView(tabManager: tabManager)
         }
     }
 }
@@ -75,7 +75,7 @@ struct ContentView: View {
             MainDesktopView(tabManager: tabManager)
         #elseif os(iOS)
         if horizontalSizeClass == .regular {
-            MainiPadView(tabManager: tabManager)
+            MainTabletView(tabManager: tabManager)
         } else {
             MainMobileView(tabManager: tabManager)
         }

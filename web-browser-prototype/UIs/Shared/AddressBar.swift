@@ -24,6 +24,7 @@ struct AddressBar: View {
                 "Search or enter website address",
                 text: $text
             )
+            .foregroundColor(.gray)
             .textFieldStyle(.plain)
             .onChange(of: tabManager.activeTab?.url) {
                 text = tabManager.activeTab?.url.absoluteString ?? ""
@@ -40,8 +41,6 @@ struct AddressBar: View {
             }
             .buttonStyle(.plain)
         }
-        .clipShape(Capsule())
-        .padding(.horizontal, 12)
         .overlay(alignment: .bottom) {
             GeometryReader { geometry in
                 Rectangle()
@@ -58,5 +57,6 @@ struct AddressBar: View {
                     : 0
             )
         }
+        .padding(.horizontal)
     }
 }
