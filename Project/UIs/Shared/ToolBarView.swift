@@ -76,11 +76,6 @@ struct ToolBarView: ToolbarContent {
             Spacer()
 
             Button {
-            } label: {
-                Image(systemName: "square.on.square")
-            }
-
-            Button {
                 tabManager.createTab()
             } label: {
                 Image(systemName: "plus")

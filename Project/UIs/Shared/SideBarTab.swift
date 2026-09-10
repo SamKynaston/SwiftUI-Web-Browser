@@ -36,7 +36,7 @@ struct SideBarTab: View {
             .padding(.vertical, 6)
             .padding(.horizontal, 8)
             .background {
-                RoundedRectangle(cornerRadius: 6)
+                Capsule()
                 .fill(
                     tabManager.activeTab?.id == tab.id
                     ? Color.accentColor.opacity(0.15)
