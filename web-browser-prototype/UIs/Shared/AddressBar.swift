@@ -12,7 +12,7 @@ struct AddressBar: View {
     @State var text: String = ""
     
     private var loadingProgress: Double {
-        tabManager.loadingProgress
+        tabManager.activeTab?.loadingProgress ?? 0
     }
     
     var body: some View {
@@ -26,7 +26,7 @@ struct AddressBar: View {
             )
             .foregroundColor(.gray)
             .textFieldStyle(.plain)
-            .onChange(of: tabManager.activeTabId) {
+            .onChange(of: tabManager.activeTab?.title) {
                 text = tabManager.activeTab?.url.absoluteString ?? ""
             }
             .onChange(of: tabManager.activeTab?.url) {
@@ -58,7 +58,7 @@ struct AddressBar: View {
                     .allowsHitTesting(false)
             }
             .opacity(
-                tabManager.isLoading == true
+                tabManager.activeTab?.isLoading == true
                     ? 1
                     : 0
             )

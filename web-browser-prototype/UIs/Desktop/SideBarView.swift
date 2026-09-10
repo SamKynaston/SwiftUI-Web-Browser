@@ -16,7 +16,7 @@ struct SideBarView: View {
                 ForEach(tabManager.tabGroups) { group in
                     SideBarTabGroup(tabManager: tabManager, group: group)
                     
-                    if tabManager.activeGroupId == group.id {           
+                    if tabManager.activeGroup?.id == group.id {           
                         ForEach(group.tabs) { tab in
                             SideBarTab(tabManager: tabManager, group: group, tab: tab)
                         }

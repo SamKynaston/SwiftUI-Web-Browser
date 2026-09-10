@@ -23,41 +23,10 @@ class TabManager {
         ])
     ]
     
-    var tabSwitchDirection: Int = 0
-    var activeTabId: UUID?
-    var activeGroupId: UUID?
-
-    var canGoBack = false
-    var canGoForward = false
-    var isLoading = false
-    var loadingProgress: Double = 0.0
+    var activeTab: TabModel?
+    var activeGroup: TabGroupModel?
     
     var browserTabs: [TabModel] {
         tabGroups.flatMap(\.tabs)
-    }
-
-    var activeTab: TabModel? {
-        guard let activeTabId else {
-            return nil
-        }
-
-        return browserTabs.first {
-            $0.id == activeTabId
-        }
-    }
-
-    var activeGroup: TabGroupModel? {
-        guard let activeGroupId else {
-            return nil
-        }
-
-        return tabGroups.first {
-            $0.id == activeGroupId
-        }
-    }
-
-    init() {
-        activeGroupId = tabGroups.first?.id
-        activeTabId = tabGroups.first?.tabs.first?.id
     }
 }

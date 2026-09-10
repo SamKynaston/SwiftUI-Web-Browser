@@ -16,7 +16,7 @@ struct ControlButtons: View {
         } label: {
             Image(systemName: "chevron.forward")
         }
-        .disabled(!tabManager.canGoForward)
+        .disabled(tabManager.activeTab?.canGoForward ?? false)
     }
     
     @ViewBuilder
@@ -37,8 +37,8 @@ struct ControlButtons: View {
             } label: {
                 Image(systemName: "chevron.backward")
             }
-            .disabled(!tabManager.canGoBack)
-            
+            .disabled(tabManager.activeTab?.canGoBack ?? false)
+
             forwardButton
         }
         .controlGroupStyle(.navigation)

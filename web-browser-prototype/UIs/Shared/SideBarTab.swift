@@ -26,7 +26,7 @@ struct SideBarTab: View {
                 Spacer()
             
                 Button {
-                    tabManager.destroyTab(tab: tab.id, in: group.id)
+                    tabManager.destroyTab(tab, in: group)
                 } label: {
                     Image(systemName: "xmark.circle")
                         .foregroundStyle(.red)
@@ -38,7 +38,7 @@ struct SideBarTab: View {
                 .background {
                     RoundedRectangle(cornerRadius: 6)
                     .fill(
-                        tabManager.activeTabId == tab.id
+                        tabManager.activeTab?.id == tab.id
                         ? Color.accentColor.opacity(0.15)
                         : .clear
                     )
@@ -48,7 +48,7 @@ struct SideBarTab: View {
             .buttonStyle(.plain)
             .contextMenu {
                 Button("Delete Tab") {
-                    tabManager.destroyTab(tab: tab.id, in: group.id)
+                    tabManager.destroyTab(tab, in: group)
                 }
             }
     }

@@ -37,13 +37,13 @@ struct SideBarTabGroup: View {
             .buttonStyle(.plain)
             .contextMenu {
                 Button("Open new tab", role: .confirm) {
-                    tabManager.createTab(urlString: "https://google.com", in: group.id)
+                    tabManager.createTab(urlString: "https://google.com", in: group)
                 }
                 Button("Delete group", role: .destructive) {
-                    tabManager.destroyTabGroup(group.id)
+                    tabManager.destroyTabGroup(group)
                 }
                 Button("Close all tabs", role: .destructive) {
-                    tabManager.destroyAllTabsInGroup(group.id)
+                    tabManager.destroyAllTabsInGroup(group)
                 }
             }
         }

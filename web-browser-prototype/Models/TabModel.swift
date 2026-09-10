@@ -11,18 +11,18 @@ import WebKit
 @Observable
 final class TabModel: Identifiable {
     let id = UUID()
-    var webView: WKWebView? = nil
+    let webView: WKWebView
+    
     var title: String = "New Tab"
     var url: URL
-    var onNavigationChange: ((URL?, String) -> Void)?
+
+    var isLoading = false
+    var loadingProgress = 0.0
+    var canGoBack = false
+    var canGoForward = false
 
     init(url: URL) {
         self.url = url
-    }
-    
-    deinit {
-        onNavigationChange = nil
-        webView?.navigationDelegate = nil
-        webView = nil
+        self.webView = WKWebView()
     }
 }

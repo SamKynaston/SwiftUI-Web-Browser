@@ -15,12 +15,11 @@ typealias ViewRepresentable = UIViewRepresentable
 #endif
 
 struct WebRenderer: ViewRepresentable {
-    let url: URL
     let manager: TabManager
-    var tabId: UUID
+    let tab: TabModel
 
     func makeCoordinator() -> Coordinator {
-        Coordinator(manager: manager, tabId: tabId)
+        Coordinator(manager: manager, tab: tab)
     }
     
     #if os(macOS)
@@ -46,13 +45,8 @@ struct WebRenderer: ViewRepresentable {
     #endif
     
     private func makeWebView(context: Context) -> WKWebView {
-        if let existingWebView = manager.getTab(id: tabId)?.webView {
-            if existingWebView.navigationDelegate != nil {
-                return existingWebView
-            }
-        }
+        let webView = tab.webView
         
-        let webView = WKWebView()
         webView.navigationDelegate = context.coordinator
         
         #if os(iOS)
@@ -63,12 +57,11 @@ struct WebRenderer: ViewRepresentable {
         webView.setValue(false, forKey: "drawsBackground")
         #endif
         
-        if let tab = manager.getTab(id: tabId) {
+        if webView.url == nil {
             webView.load(URLRequest(url: tab.url))
         }
         
         context.coordinator.observeProgress(of: webView)
-        manager.setTabWebview(webView, for: tabId)
         
         return webView
     }
@@ -81,11 +74,11 @@ struct WebRenderer: ViewRepresentable {
         private var progressObservation: NSKeyValueObservation?
         
         weak var manager: TabManager?
-        let tabId: UUID
+        let tab: TabModel
 
-        init(manager: TabManager, tabId: UUID) {
+        init(manager: TabManager, tab: TabModel) {
             self.manager = manager
-            self.tabId = tabId
+            self.tab = tab
         }
         
         func observeProgress(of webView: WKWebView) {
@@ -94,7 +87,7 @@ struct WebRenderer: ViewRepresentable {
                 options: [.initial, .new]
             ) { [weak self] webView, _ in
                 DispatchQueue.main.async {
-                    self?.manager?.loadingProgress = webView.estimatedProgress
+                    self?.tab.loadingProgress = webView.estimatedProgress
                 }
             }
         }
@@ -103,8 +96,8 @@ struct WebRenderer: ViewRepresentable {
             _ webView: WKWebView,
             didStartProvisionalNavigation navigation: WKNavigation?
         ) {
-            manager?.isLoading = true
-            manager?.loadingProgress = 0
+            tab.isLoading = true
+            tab.loadingProgress = 0
             updateState(webView)
         }
         
@@ -112,8 +105,8 @@ struct WebRenderer: ViewRepresentable {
             _ webView: WKWebView,
             didFinish navigation: WKNavigation?
         ) {
-            manager?.isLoading = false
-            manager?.loadingProgress = 1
+            tab.isLoading = false
+            tab.loadingProgress = 1
             updateState(webView)
             updateBackgroundColor(webView)
         }
@@ -123,7 +116,7 @@ struct WebRenderer: ViewRepresentable {
             didFail navigation: WKNavigation?,
             withError error: Error
         ) {
-            manager?.isLoading = false
+            tab.isLoading = false
             updateState(webView)
         }
 
@@ -132,7 +125,7 @@ struct WebRenderer: ViewRepresentable {
             didFailProvisionalNavigation navigation: WKNavigation?,
             withError error: Error
         ) {
-            manager?.isLoading = false
+            tab.isLoading = false
             updateState(webView)
         }
         
@@ -143,12 +136,12 @@ struct WebRenderer: ViewRepresentable {
         private func updateState(_ webView: WKWebView) {
             guard let manager = manager else { return }
                         
-            manager.setTabUrl(webView.url ?? manager.getTab(id: tabId)!.url, for: tabId)
-            manager.setTabTitle(webView.title ?? "New Tab", for: tabId)
+            manager.setTabUrl(webView.url ?? tab.url, for: tab)
+            manager.setTabTitle(webView.title ?? "New Tab", for: tab)
             
-            if manager.activeTabId == tabId {
-                manager.canGoBack = webView.canGoBack
-                manager.canGoForward = webView.canGoForward
+            if manager.activeTab?.id == tab.id {
+                tab.canGoBack = webView.canGoBack
+                tab.canGoForward = webView.canGoForward
             }
         }
     }

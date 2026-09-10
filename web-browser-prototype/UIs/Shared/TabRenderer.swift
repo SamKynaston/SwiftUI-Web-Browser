@@ -12,15 +12,14 @@ struct TabRenderer: View {
 
     var body: some View {
         ZStack {
-            ForEach(tabManager.browserTabs) { tab in
+            ForEach(tabManager.activeGroup?.tabs ?? []) { tab in
                 WebRenderer(
-                    url: tab.url,
                     manager: tabManager,
-                    tabId: tab.id
+                    tab: tab
                 )
                 .id(tab.id)
-                .opacity(tab.id == tabManager.activeTabId ? 1 : 0)
-                .zIndex(tab.id == tabManager.activeTabId ? 1 : 0)
+                .opacity(tab.id == tabManager.activeTab?.id ? 1 : 0)
+                .zIndex(tab.id == tabManager.activeTab?.id ? 1 : 0)
             }
         }
     }
