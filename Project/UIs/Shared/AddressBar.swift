@@ -8,59 +8,45 @@
 import SwiftUI
 
 struct AddressBar: View {
-    @Bindable var browserManager: BrowserTabManager
+    @Bindable var tabManager: TabManager
     @State var text: String = ""
-
-    init(browserManager: BrowserTabManager) {
-        self.browserManager = browserManager
-
-        let url = browserManager.activeTab?.browserWebManager.url
-            ?? browserManager.activeTab?.url
-
-        _text = State(
-            initialValue: url?.absoluteString ?? ""
-        )
-    }
     
     private var loadingProgress: Double {
-        browserManager.activeTab?
-            .browserWebManager
-            .loadingProgress ?? 0
+        tabManager.activeTab?.loadingProgress ?? 0
     }
     
     var body: some View {
         HStack {
             Image(systemName: "magnifyingglass")
-                .foregroundColor(.gray)
+                .foregroundColor(.primary)
             
             TextField(
                 "Search or enter website address",
                 text: $text
             )
+            .foregroundColor(.gray)
             .textFieldStyle(.plain)
-            .onChange(of: browserManager.activeTab?.browserWebManager.url) {
-                text = browserManager.activeTab?.browserWebManager.url?.absoluteString ?? ""
+            .onChange(of: tabManager.activeTab?.title) {
+                text = tabManager.activeTab?.url.absoluteString ?? ""
             }
-            .onChange(of: browserManager.activeTabId) {
-                text =
-                    browserManager.activeTab?.browserWebManager.url?.absoluteString
-                    ?? browserManager.activeTab?.url.absoluteString
-                    ?? ""
+            .onChange(of: tabManager.activeTab?.url) {
+                text = tabManager.activeTab?.url.absoluteString ?? ""
+            }
+            .onSubmit {
+                tabManager.navigate(to: text)
             }
             .onSubmit() {
-                browserManager.activeTab?.browserWebManager.navigate(to: text)
+                tabManager.navigate(to: text)
             }
             
             Button {
-                browserManager.reload()
+                tabManager.reload()
             } label: {
                 Image(systemName: "arrow.trianglehead.clockwise.rotate.90")
-                    .foregroundColor(.gray)
+                    .foregroundColor(.primary)
             }
             .buttonStyle(.plain)
         }
-        .clipShape(Capsule())
-        .padding(.horizontal, 12)
         .overlay(alignment: .bottom) {
             GeometryReader { geometry in
                 Rectangle()
@@ -72,10 +58,11 @@ struct AddressBar: View {
                     .allowsHitTesting(false)
             }
             .opacity(
-                browserManager.activeTab?.browserWebManager.isLoading == true
+                tabManager.activeTab?.isLoading == true
                     ? 1
                     : 0
             )
         }
+        .padding(.horizontal)
     }
 }
