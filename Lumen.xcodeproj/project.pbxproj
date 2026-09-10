@@ -7,13 +7,13 @@
 	objects = {
 
 /* Begin PBXFileReference section */
-		000000000000000000000120 /* web-browser-prototype.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "web-browser-prototype.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		000000000000000000000120 /* Lumen.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Lumen.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		000000000000000000000010 /* web-browser-prototype */ = {
+		000000000000000000000010 /* Project */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = "web-browser-prototype";
+			path = Project;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -30,7 +30,7 @@
 		000000000000000000000001 = {
 			isa = PBXGroup;
 			children = (
-				000000000000000000000010 /* web-browser-prototype */,
+				000000000000000000000010 /* Project */,
 				000000000000000000000020 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -38,7 +38,7 @@
 		000000000000000000000020 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				000000000000000000000120 /* web-browser-prototype.app */,
+				000000000000000000000120 /* Lumen.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -46,9 +46,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		000000000000000100000000 /* web-browser-prototype */ = {
+		000000000000000100000000 /* Lumen */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 000000000000000110000000 /* Build configuration list for PBXNativeTarget "web-browser-prototype" */;
+			buildConfigurationList = 000000000000000110000000 /* Build configuration list for PBXNativeTarget "Lumen" */;
 			buildPhases = (
 				000000000000000120000000 /* Sources */,
 				000000000000000130000000 /* Frameworks */,
@@ -57,11 +57,11 @@
 			buildRules = (
 			);
 			fileSystemSynchronizedGroups = (
-				000000000000000000000010 /* web-browser-prototype */,
+				000000000000000000000010 /* Project */,
 			);
-			name = "web-browser-prototype";
+			name = Lumen;
 			productName = MyApp;
-			productReference = 000000000000000000000120 /* web-browser-prototype.app */;
+			productReference = 000000000000000000000120 /* Lumen.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -79,7 +79,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 000000000000000010000000 /* Build configuration list for PBXProject "web-browser-prototype" */;
+			buildConfigurationList = 000000000000000010000000 /* Build configuration list for PBXProject "Lumen" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -93,7 +93,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				000000000000000100000000 /* web-browser-prototype */,
+				000000000000000100000000 /* Lumen */,
 			);
 		};
 /* End PBXProject section */
@@ -115,7 +115,7 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
-		000000000000000011000000 /* Debug configuration for PBXProject "web-browser-prototype" */ = {
+		000000000000000011000000 /* Debug configuration for PBXProject "Lumen" */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -176,6 +176,7 @@
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = Lumen;
 				PROJECT_UNIQUE_VALUE = UJP3M4PI;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
@@ -185,7 +186,7 @@
 			};
 			name = Debug;
 		};
-		000000000000000012000000 /* Release configuration for PBXProject "web-browser-prototype" */ = {
+		000000000000000012000000 /* Release configuration for PBXProject "Lumen" */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -239,6 +240,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 27.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = Lumen;
 				PROJECT_UNIQUE_VALUE = UJP3M4PI;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
@@ -247,7 +249,7 @@
 			};
 			name = Release;
 		};
-		000000000000000111000000 /* Debug configuration for PBXNativeTarget "web-browser-prototype" */ = {
+		000000000000000111000000 /* Debug configuration for PBXNativeTarget "Lumen" */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
@@ -296,7 +298,7 @@
 			};
 			name = Debug;
 		};
-		000000000000000112000000 /* Release configuration for PBXNativeTarget "web-browser-prototype" */ = {
+		000000000000000112000000 /* Release configuration for PBXNativeTarget "Lumen" */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
@@ -348,19 +350,19 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		000000000000000010000000 /* Build configuration list for PBXProject "web-browser-prototype" */ = {
+		000000000000000010000000 /* Build configuration list for PBXProject "Lumen" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				000000000000000011000000 /* Debug configuration for PBXProject "web-browser-prototype" */,
-				000000000000000012000000 /* Release configuration for PBXProject "web-browser-prototype" */,
+				000000000000000011000000 /* Debug configuration for PBXProject "Lumen" */,
+				000000000000000012000000 /* Release configuration for PBXProject "Lumen" */,
 			);
 			defaultConfigurationName = Release;
 		};
-		000000000000000110000000 /* Build configuration list for PBXNativeTarget "web-browser-prototype" */ = {
+		000000000000000110000000 /* Build configuration list for PBXNativeTarget "Lumen" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				000000000000000111000000 /* Debug configuration for PBXNativeTarget "web-browser-prototype" */,
-				000000000000000112000000 /* Release configuration for PBXNativeTarget "web-browser-prototype" */,
+				000000000000000111000000 /* Debug configuration for PBXNativeTarget "Lumen" */,
+				000000000000000112000000 /* Release configuration for PBXNativeTarget "Lumen" */,
 			);
 			defaultConfigurationName = Release;
 		};
