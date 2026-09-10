@@ -48,7 +48,7 @@ struct WebRenderer: ViewRepresentable {
         let webView = tab.webView
         
         webView.navigationDelegate = context.coordinator
-        
+
         #if os(iOS)
         webView.isOpaque = false
         webView.backgroundColor = .clear
