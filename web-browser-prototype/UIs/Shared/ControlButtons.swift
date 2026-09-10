@@ -22,7 +22,7 @@ struct ControlButtons: View {
     @ViewBuilder
     var forwardButton: some View {
         #if os(iOS)
-        if tabManager.canGoForward {
+        if tabManager.activeTab!.canGoForward {
             forwardButtonView
         }
         #else
