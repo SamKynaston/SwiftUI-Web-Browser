@@ -29,8 +29,16 @@ struct TabSheetView: View {
             .navigationTitle("Tabs")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button {
+                        tabManager.createTabGroup(name: "Default")
+                    } label : {
+                        Image(systemName: "plus")
+                    }
+                }
+                
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button("Done") {
+                    Button(role: .confirm) {
                         dismiss()
                     }
                 }
