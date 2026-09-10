@@ -1,4 +1,5 @@
 import SwiftUI
+import SwiftData
 
 #if os(macOS)
 struct MainDesktopView: View {
@@ -68,19 +69,30 @@ struct MainMobileView: View {
 #endif
 
 struct ContentView: View {
-    @State var tabManager = TabManager()
+    @Environment(\.modelContext) private var modelContext
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     
+    @State private var tabManager: TabManager?
+    
     var body: some View {
-        #if os(macOS)
-            MainDesktopView(tabManager: tabManager)
-        #elseif os(iOS)
-        if horizontalSizeClass == .regular {
-            MainTabletView(tabManager: tabManager)
-        } else {
-            MainMobileView(tabManager: tabManager)
+        Group {
+            if let tabManager {
+                #if os(macOS)
+                    MainDesktopView(tabManager: tabManager)
+                #elseif os(iOS)
+                if horizontalSizeClass == .regular {
+                    MainTabletView(tabManager: tabManager)
+                } else {
+                    MainMobileView(tabManager: tabManager)
+                }
+                #endif
+            }
         }
-        #endif
+        .task {
+            if tabManager == nil {
+                tabManager = TabManager(modelContext: modelContext)
+            }
+        }
     }
 }
 

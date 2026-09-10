@@ -6,15 +6,17 @@
 //
 
 import SwiftUI
+import SwiftData
 
-@Observable
+@Model
 final class TabGroupModel: Identifiable {
-    let id = UUID()
-    
+    var id = UUID()
     var name: String
+    
+    @Relationship(deleteRule: .cascade)
     var tabs: [TabModel]
     
-    init(name: String, tabs: [TabModel]) {
+    init(name: String, tabs: [TabModel] = []) {
         self.name = name
         self.tabs = tabs
     }

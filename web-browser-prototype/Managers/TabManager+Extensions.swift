@@ -7,6 +7,7 @@
 
 import SwiftUI
 import WebKit
+import SwiftData
 
 extension TabManager {
     func selectGroup(_ group: TabGroupModel) {
@@ -25,10 +26,13 @@ extension TabManager {
             tabs: []
         )
 
+        modelContext.insert(group)
         tabGroups.append(group)
 
         activeGroup = group
         activeTab = nil
+        
+        save()
     }
     
     func createTab(urlString: String = "https://google.com", in group: TabGroupModel? = nil) {
@@ -43,10 +47,14 @@ extension TabManager {
         guard let targetGroup = group ?? activeGroup else {
             return
         }
+        
+        modelContext.insert(newTab)
         targetGroup.tabs.append(newTab)
 
         activeGroup = targetGroup
         activeTab = newTab
+        
+        save()
     }
 
     func destroyTab(_ tab: TabModel, in group: TabGroupModel) {
@@ -54,18 +62,22 @@ extension TabManager {
         tab.webView.stopLoading()
 
         group.tabs.removeAll { $0 === tab }
-
+        modelContext.delete(tab)
+        
         if activeTab === tab {
             activeTab = group.tabs.first
         }
     }
     
     func destroyTabGroup(_ group: TabGroupModel?) {
-        let targetGroup = group ?? activeGroup
+        guard let targetGroup = group ?? activeGroup else { return }
         
         destroyAllTabsInGroup(targetGroup)
+        modelContext.delete(targetGroup)
         
-        tabGroups.removeAll { $0.id == targetGroup?.id }
+        tabGroups.removeAll { $0.id == targetGroup.id }
+        
+        save()
     }
 
     func moveTab(from source: IndexSet, to destination: Int, in group: TabGroupModel) {
@@ -127,8 +139,27 @@ extension TabManager {
         }
 
         for tab in targetGroup.tabs {
-            tab.webView.navigationDelegate = nil
-            tab.webView.stopLoading()
+            destroyTab(tab, in: targetGroup)
+
+        }
+    }
+    
+    func loadPersistedTabs() {
+        do {
+            let descriptor = FetchDescriptor<TabGroupModel>()
+            tabGroups = try modelContext.fetch(descriptor)
+            activeGroup = tabGroups.first
+            activeTab = activeGroup?.tabs.first
+        } catch {
+            print("Failed to load tab groups: \(error)")
+        }
+    }
+    
+    func save() {
+        do {
+            try modelContext.save()
+        } catch {
+            print("Failed to save SwiftData context: \(error)")
         }
     }
 }
