@@ -33,23 +33,23 @@ struct SideBarTab: View {
                 }
                 .buttonStyle(.plain)
             }
-                .padding(.vertical, 6)
-                .padding(.horizontal, 8)
-                .background {
-                    RoundedRectangle(cornerRadius: 6)
-                    .fill(
-                        tabManager.activeTab?.id == tab.id
-                        ? Color.accentColor.opacity(0.15)
-                        : .clear
-                    )
-                }
-                .contentShape(Rectangle())
+            .padding(.vertical, 6)
+            .padding(.horizontal, 8)
+            .background {
+                RoundedRectangle(cornerRadius: 6)
+                .fill(
+                    tabManager.activeTab?.id == tab.id
+                    ? Color.accentColor.opacity(0.15)
+                    : .clear
+                )
             }
-            .buttonStyle(.plain)
-            .contextMenu {
-                Button("Delete Tab") {
-                    tabManager.destroyTab(tab, in: group)
-                }
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .contextMenu {
+            Button("Delete Tab") {
+                tabManager.destroyTab(tab, in: group)
             }
+        }
     }
 }

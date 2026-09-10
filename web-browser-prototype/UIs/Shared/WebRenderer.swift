@@ -135,14 +135,12 @@ struct WebRenderer: ViewRepresentable {
 
         private func updateState(_ webView: WKWebView) {
             guard let manager = manager else { return }
-                        
+
             manager.setTabUrl(webView.url ?? tab.url, for: tab)
             manager.setTabTitle(webView.title ?? "New Tab", for: tab)
-            
-            if manager.activeTab?.id == tab.id {
-                tab.canGoBack = webView.canGoBack
-                tab.canGoForward = webView.canGoForward
-            }
+
+            tab.canGoBack = webView.canGoBack
+            tab.canGoForward = webView.canGoForward
         }
     }
 }

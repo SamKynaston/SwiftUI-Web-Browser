@@ -18,7 +18,7 @@ struct AddressBar: View {
     var body: some View {
         HStack {
             Image(systemName: "magnifyingglass")
-                .foregroundColor(.gray)
+                .foregroundColor(.primary)
             
             TextField(
                 "Search or enter website address",
@@ -43,7 +43,7 @@ struct AddressBar: View {
                 tabManager.reload()
             } label: {
                 Image(systemName: "arrow.trianglehead.clockwise.rotate.90")
-                    .foregroundColor(.gray)
+                    .foregroundColor(.primary)
             }
             .buttonStyle(.plain)
         }

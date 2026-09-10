@@ -11,6 +11,7 @@ import WebKit
 struct ToolBarView: ToolbarContent {
     @Bindable var tabManager: TabManager
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+    @State private var showSheet = false
 
     var activeTab: TabModel? {
         tabManager.activeTab
@@ -25,12 +26,16 @@ struct ToolBarView: ToolbarContent {
                 Spacer()
 
                 AddressBar(tabManager: tabManager)
-
+                    .font(.system(size: 12))
                 Spacer()
 
                 Button {
+                    showSheet = true
                 } label: {
                     Image(systemName: "square.on.square")
+                }
+                .sheet(isPresented: $showSheet) {
+                    TabSheetView(tabManager: tabManager)
                 }
             }
         } else {

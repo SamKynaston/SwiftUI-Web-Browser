@@ -16,13 +16,13 @@ struct ControlButtons: View {
         } label: {
             Image(systemName: "chevron.forward")
         }
-        .disabled(tabManager.activeTab?.canGoForward ?? false)
+        .disabled(tabManager.activeTab?.canGoForward != true)
     }
     
     @ViewBuilder
     var forwardButton: some View {
         #if os(iOS)
-        if tabManager.activeTab!.canGoForward {
+        if let tab = tabManager.activeTab, tab.canGoForward {
             forwardButtonView
         }
         #else
@@ -37,8 +37,8 @@ struct ControlButtons: View {
             } label: {
                 Image(systemName: "chevron.backward")
             }
-            .disabled(tabManager.activeTab?.canGoBack ?? false)
-
+            .disabled(tabManager.activeTab?.canGoBack != true)
+            
             forwardButton
         }
         .controlGroupStyle(.navigation)
