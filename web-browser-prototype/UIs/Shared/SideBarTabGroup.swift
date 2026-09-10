@@ -11,6 +11,11 @@ struct SideBarTabGroup: View {
     @Bindable var tabManager: TabManager
     let group: TabGroupModel
     
+    @State private var isRenaming = false
+    @State private var newName = ""
+    
+    @FocusState private var renameFieldFocused: Bool
+    
     var body: some View {
         VStack(spacing: 0) {
             Button {
@@ -20,8 +25,16 @@ struct SideBarTabGroup: View {
                     Image(systemName: "square.on.square")
                         .foregroundStyle(.tint)
                     
-                    Text(group.name)
-                        .lineLimit(1)
+                    if isRenaming {
+                        TextField("Group name", text: $newName)
+                            .focused($renameFieldFocused)
+                            .onSubmit {
+                                renameGroup()
+                            }
+                    } else {
+                        Text(group.name)
+                            .lineLimit(1)
+                    }
                     
                     Spacer()
                     
@@ -39,6 +52,9 @@ struct SideBarTabGroup: View {
                 Button("Open new tab", role: .confirm) {
                     tabManager.createTab(urlString: "https://google.com", in: group)
                 }
+                Button("Rename group", role: .confirm) {
+                    startRenaming()
+                }
                 Button("Delete group", role: .destructive) {
                     tabManager.destroyTabGroup(group)
                 }
@@ -47,5 +63,22 @@ struct SideBarTabGroup: View {
                 }
             }
         }
+    }
+    
+    private func startRenaming() {
+        newName = group.name
+        isRenaming = true
+        
+        DispatchQueue.main.async {
+            renameFieldFocused = true
+        }
+    }
+    
+    public func renameGroup() {
+        let trimmedName = newName.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmedName.isEmpty else { isRenaming = false; return }
+        
+        group.name = trimmedName
+        isRenaming = false
     }
 }
