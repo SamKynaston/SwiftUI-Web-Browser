@@ -17,6 +17,7 @@ struct MainDesktopView: View {
                         }
                     }
                 }
+                .frame(minWidth: 200, maxWidth: .infinity, minHeight: 600, maxHeight: .infinity, alignment: .center)
         } detail: {
             TabRenderer(tabManager: tabManager)
                 .toolbar {
