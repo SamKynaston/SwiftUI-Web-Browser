@@ -80,6 +80,9 @@ struct ContentView: View {
             if let tabManager {
                 #if os(macOS)
                     MainDesktopView(tabManager: tabManager)
+                        .onAppear {
+                            NSWindow.allowsAutomaticWindowTabbing = false
+                        }
                 #elseif os(iOS)
                 if horizontalSizeClass == .regular {
                     MainTabletView(tabManager: tabManager)
